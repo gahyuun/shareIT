@@ -1,1 +1,3 @@
-export const routes = [];
+import Home from '../pages/Home';
+
+export const routes = [{ path: '/', component: Home }];
