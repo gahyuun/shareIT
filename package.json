@@ -15,21 +15,25 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "autoprefixer": "^10.4.16",
+    "css-loader": "^6.7.1",
     "eslint": "^8.49.0",
     "eslint-config-prettier": "^9.0.0",
-    "prettier": "^3.0.3",
     "html-webpack-plugin": "^5.5.3",
-    "webpack": "^5.88.2",
-    "webpack-cli": "^5.1.4",
-    "css-loader": "^6.7.1",
-    "sass-loader": "^13.0.2",
+    "postcss": "^8.4.31",
+    "prettier": "^3.0.3",
     "style-loader": "^3.3.1",
-    "sass": "^1.55.0",
+    "tailwindcss": "^3.3.3",
+    "webpack": "^5.88.2",
     "webpack-bundle-analyzer": "^4.6.1",
+    "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.11.1"
   },
   "bugs": {
     "url": "https://github.com/gahyuun/shareIT/issues"
   },
-  "homepage": "https://github.com/gahyuun/shareIT#readme"
+  "homepage": "https://github.com/gahyuun/shareIT#readme",
+  "dependencies": {
+    "postcss-loader": "^7.3.3"
+  }
 }
