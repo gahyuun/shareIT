@@ -3,7 +3,7 @@ import { createDom } from './core/Dom';
 import { routeRender } from './core/router';
 import './tailwind.css';
 
-const root = document.querySelector('#root');
+const root = document.querySelector('body');
 
 createDom(new App(root));
 routeRender();
