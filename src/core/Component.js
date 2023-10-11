@@ -5,17 +5,12 @@ export class Component {
     this.componentRoot = root;
     this.eventListeners = [];
     this.children = [];
-    this.initState();
-    this.setDefaultProps(props);
-  }
-  initState() {
     this.state = {};
-  }
-  setDefaultProps(props) {
     this.props = props;
   }
-  setProps(newProps) {
-    this.props = { ...this.props, ...newProps };
+
+  setProps(props) {
+    this.props = { ...this.props, ...props };
   }
   setState(newState) {
     if (JSON.stringify(newState) === JSON.stringify(this.state)) return; // state값이 일치했을 때 return
@@ -48,10 +43,9 @@ export class Component {
   }
 
   addEvent(eventType, selector, callback) {
-    const targetList = [...this.componentRoot.querySelectorAll(selector)];
-
     const getTarget = (eventDom) => {
-      if (targetList.includes(eventDom)) return eventDom;
+      const targets = [...this.componentRoot.querySelectorAll(selector)];
+      if (targets.includes(eventDom)) return eventDom;
     };
 
     const eventListener = (event) => {
