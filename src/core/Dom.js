@@ -24,6 +24,7 @@ export function updateDom(component) {
   newNode.innerHTML = component.template();
   const oldChildNodes = [...componentRoot.childNodes];
   const newChildNodes = [...newNode.childNodes];
+
   const max = Math.max(oldChildNodes.length, newChildNodes.length);
 
   for (let i = 0; i < max; i++) {
@@ -34,7 +35,6 @@ export function updateDom(component) {
 
 export function createDom(component) {
   const { componentRoot } = component;
-
   if (oldComponent) {
     clearEvent(oldComponent);
   }

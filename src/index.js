@@ -1,11 +1,11 @@
-import App from '../App';
+import Header from './components/Header';
 import { createDom } from './core/Dom';
 import { routeRender } from './core/router';
 import './tailwind.css';
 
-const root = document.querySelector('body');
+const headerRoot = document.querySelector('.header');
 
-createDom(new App(root));
+createDom(new Header(headerRoot));
 routeRender();
 
 window.addEventListener('popstate', () => {
