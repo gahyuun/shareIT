@@ -1,6 +1,19 @@
+import Swal from 'sweetalert2';
 import { routes } from '../routes';
+import { userStore } from '../store/user';
 import { createDom } from './Dom';
 
+const checkAuthentication = (currentRoute) => {
+  if (currentRoute.authentication && !userStore.user) {
+    return false;
+  }
+  return true;
+};
+
+const redirectHome = () => {
+  Swal.fire('로그인 후 이용하실 수 있습니다');
+  navigate('/');
+};
 export function routeRender() {
   if (!location.pathname) {
     history.replaceState(null, '', '/');
@@ -10,6 +23,11 @@ export function routeRender() {
   const currentRoute = routes.find((route) => {
     return new RegExp(route.path + '/?$').test(location.pathname);
   });
+
+  if (!checkAuthentication(currentRoute)) {
+    redirectHome();
+    return;
+  }
 
   createDom(new currentRoute.component(root));
   window.scrollTo(0, 0);
