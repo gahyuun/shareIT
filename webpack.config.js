@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+
 const BundleAnalyzerPlugin =
   require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const dotenv = require('dotenv');
@@ -57,6 +58,7 @@ module.exports = {
     compress: true,
     port: 3000,
     open: true,
+    historyApiFallback: true,
     devMiddleware: {
       writeToDisk: true,
     },
