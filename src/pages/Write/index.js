@@ -87,6 +87,11 @@ export default class Write extends Component {
       if (existFile(file)) {
         imageUrl = await uploadImage(file, uuidv4());
       }
+      const data = {
+        title,
+        content,
+        imageUrl,
+      };
     });
     this.addEvent('change', '#file', (_, target) => {
       this.previewImage(_, target);
