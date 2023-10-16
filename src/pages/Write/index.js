@@ -33,16 +33,25 @@ export default class Write extends Component {
                 </form>
             </section>`;
   }
-  async r(file) {
-    return await uploadImage(file, uuidv4());
-  }
-  handleReaderOnLoad(event) {
+  getImageElements() {
     const imageContainer = this.componentRoot.querySelector('#imageContainer');
     const imageLogo = this.componentRoot.querySelector('#imageLogo');
+    const fileInput = this.componentRoot.querySelector('#file');
     const thumbnailButton =
       this.componentRoot.querySelector('#thumbnailButton');
     const deleteImageButton =
       this.componentRoot.querySelector('#deleteImageButton');
+    return {
+      imageContainer,
+      imageLogo,
+      fileInput,
+      thumbnailButton,
+      deleteImageButton,
+    };
+  }
+  handleReaderOnLoad(event) {
+    const { imageContainer, imageLogo, thumbnailButton, deleteImageButton } =
+      this.getImageElements.bind(this)();
     imageContainer.style.backgroundImage = `url(${event.currentTarget.result})`;
     imageLogo.style.display = 'none';
     thumbnailButton.style.display = 'none';
@@ -50,9 +59,22 @@ export default class Write extends Component {
   }
   previewImage(_, target) {
     const reader = new FileReader();
-    console.log(this);
     reader.onload = this.handleReaderOnLoad.bind(this);
     reader.readAsDataURL(target.files[0]);
+  }
+  deletePreviewImage() {
+    const {
+      imageContainer,
+      imageLogo,
+      thumbnailButton,
+      deleteImageButton,
+      fileInput,
+    } = this.getImageElements.bind(this)();
+    fileInput.value = '';
+    imageContainer.style.backgroundImage = '';
+    imageLogo.style.display = 'block';
+    thumbnailButton.style.display = 'flex';
+    deleteImageButton.style.display = 'none';
   }
   setEvent() {
     this.addEvent('submit', '#writeForm', async (event, target) => {
@@ -61,9 +83,18 @@ export default class Write extends Component {
       const file = formData.get('file');
       const title = formData.get('title');
       const content = formData.get('content');
+      let imageUrl = null;
+      if (existFile(file)) {
+        imageUrl = await uploadImage(file, uuidv4());
+      }
     });
     this.addEvent('change', '#file', (_, target) => {
       this.previewImage(_, target);
     });
+    this.addEvent(
+      'click',
+      '#deleteImageButton',
+      this.deletePreviewImage.bind(this),
+    );
   }
 }
