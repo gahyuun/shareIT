@@ -4,7 +4,7 @@ import { userStore } from '../store/user';
 import { createDom } from './Dom';
 
 const checkAuthentication = (currentRoute) => {
-  if (currentRoute.authentication && !userStore.state.user) {
+  if (currentRoute.authentication && userStore.state.user === null) {
     return false;
   }
   return true;

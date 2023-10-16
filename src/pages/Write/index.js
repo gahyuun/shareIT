@@ -1,8 +1,9 @@
 import { Component } from '../../core/Component';
 import imageLogo from '../../assets/imageLogo.svg';
-import { uploadImage } from '../../apis/article';
+import { uploadArticleData, uploadImage } from '../../apis/article';
 import { v4 as uuidv4 } from 'uuid';
 import { existFile } from '../../utils/validate';
+import { navigate } from '../../core/router';
 
 export default class Write extends Component {
   template() {
@@ -76,26 +77,23 @@ export default class Write extends Component {
     thumbnailButton.style.display = 'flex';
     deleteImageButton.style.display = 'none';
   }
+  async handleSubmit(event, target) {
+    event.preventDefault();
+    const formData = new FormData(target);
+    const file = formData.get('file');
+    const title = formData.get('title');
+    const content = formData.get('content');
+    let imageUrl = null;
+    const data = { title, content, imageUrl };
+    if (existFile(file)) {
+      imageUrl = await uploadImage(file, uuidv4());
+    }
+    await uploadArticleData(data);
+    navigate('/');
+  }
   setEvent() {
-    this.addEvent('submit', '#writeForm', async (event, target) => {
-      event.preventDefault();
-      const formData = new FormData(target);
-      const file = formData.get('file');
-      const title = formData.get('title');
-      const content = formData.get('content');
-      let imageUrl = null;
-      if (existFile(file)) {
-        imageUrl = await uploadImage(file, uuidv4());
-      }
-      const data = {
-        title,
-        content,
-        imageUrl,
-      };
-    });
-    this.addEvent('change', '#file', (_, target) => {
-      this.previewImage(_, target);
-    });
+    this.addEvent('submit', '#writeForm', this.handleSubmit);
+    this.addEvent('change', '#file', this.previewImage.bind(this));
     this.addEvent(
       'click',
       '#deleteImageButton',
