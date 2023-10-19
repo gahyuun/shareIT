@@ -16,9 +16,9 @@ export default class Header extends Component {
     const user = userStore.state.user;
     return `<header class="max-w-[81.25rem] mt-[1.6875rem] mx-auto">
                 <section class="flex justify-between items-center">
-                  <div class="flex items-center gap-[0.6875rem]">
-                    <img src="${logo}" alt="logo" class="w-[2.7rem] h-[2.5rem] cursor-pointer">
-                    <div class="text-3xl font-bold text-primary">shareIT</div>
+                  <div class="flex items-center gap-[0.6875rem] cursor-pointer">
+                    <img src="${logo}" alt="logo" class="w-[2.7rem] h-[2.5rem] navigateHome">
+                    <div class="text-3xl font-bold text-primary navigateHome">shareIT</div>
                   </div>
                   ${
                     user === ''
@@ -40,6 +40,9 @@ export default class Header extends Component {
 
     this.addEvent('click', '#navigateMy', () => {
       navigate('/my');
+    });
+    this.addEvent('click', '.navigateHome', () => {
+      navigate('/');
     });
   }
 }
