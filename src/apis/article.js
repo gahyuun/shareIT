@@ -10,6 +10,7 @@ import {
 } from 'firebase/firestore';
 import Swal from 'sweetalert2';
 import { articlesStore } from '../store/article';
+import { sliceContent } from '../utils/common';
 
 export const uploadImage = async (fileData, refId) => {
   const storageRef = ref(storage, refId);
@@ -55,5 +56,7 @@ const convertResponseToArray = (response) => {
 export const getArticles = async () => {
   const getArticlesQuery = query(collection(db, 'article'));
   const response = await getDocs(getArticlesQuery);
-  articlesStore.state.articles = convertResponseToArray(response);
+  const articlesArray = convertResponseToArray(response);
+  sliceContent(articlesArray, 0, 70);
+  articlesStore.state.articles = articlesArray;
 };
