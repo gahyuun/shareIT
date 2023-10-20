@@ -4,6 +4,7 @@ import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { auth } from '../../apis/firebase';
 import { userStore } from '../../store/user';
 import { navigate } from '../../core/router';
+import { ROUTES } from '../../constants/routes';
 
 export default class Header extends Component {
   constructor(root) {
@@ -39,10 +40,10 @@ export default class Header extends Component {
     });
 
     this.addEvent('click', '#navigateMy', () => {
-      navigate('/my');
+      navigate(ROUTES.MY);
     });
     this.addEvent('click', '.navigateHome', () => {
-      navigate('/');
+      navigate(ROUTES.HOME);
     });
   }
 }

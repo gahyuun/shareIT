@@ -4,6 +4,7 @@ import { uploadArticleData, uploadImage } from '../../apis/article';
 import { v4 as uuidv4 } from 'uuid';
 import { existFile } from '../../utils/validate';
 import { navigate } from '../../core/router';
+import { ROUTES } from '../../constants/routes';
 
 export default class Write extends Component {
   template() {
@@ -89,7 +90,7 @@ export default class Write extends Component {
       data.imageUrl = await uploadImage(file, uuidv4());
     }
     await uploadArticleData(data);
-    navigate('/');
+    navigate(ROUTES.HOME);
   }
   setEvent() {
     this.addEvent('submit', '#writeForm', this.handleSubmit);

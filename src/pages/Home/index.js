@@ -1,5 +1,6 @@
 import Article from '../../components/Article';
 import ArticleList from '../../components/Article/ArticleList';
+import { ROUTES } from '../../constants/routes';
 import { Component } from '../../core/Component';
 import { navigate } from '../../core/router';
 
@@ -25,7 +26,7 @@ export default class Home extends Component {
   }
   setEvent() {
     this.addEvent('click', '#navigateWrite', () => {
-      navigate('/write');
+      navigate(ROUTES.WRITE);
     });
   }
 }
