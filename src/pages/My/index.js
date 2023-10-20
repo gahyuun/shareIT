@@ -13,9 +13,9 @@ export default class My extends Component {
     const user = userStore.state.user;
     return `<article class="max-w-[46.875rem] h-[8.125rem] mx-auto mt-[8.4375rem] flex gap-[4rem]">
                   ${
-                    user === ''
+                    user === 'loading'
                       ? ''
-                      : `       <img src="${user.photoURL}" class="w-[8.125rem] h-full rounded-full"/>
+                      : `<img src="${user.photoURL}" class="w-[8.125rem] h-full rounded-full"/>
                   <section class="flex flex-col justify-between py-[0.4rem]">
                   <div class="text-[2rem] font-semibold text-primary">${user.displayName}님</div>
                   <button class="border border-solid border-lightGray rounded-3xl w-[7.875rem] h-[2.75rem] text-xl font-normal"

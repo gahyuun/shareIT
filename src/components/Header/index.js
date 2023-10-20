@@ -22,9 +22,9 @@ export default class Header extends Component {
                     <div class="text-3xl font-bold text-primary navigateHome">shareIT</div>
                   </div>
                   ${
-                    user === ''
+                    user === 'loading'
                       ? ''
-                      : user === null
+                      : user === ''
                       ? '<button class="text-xl font-normal text-gray" id="loginButton">로그인</button>'
                       : `<button class="text-xl font-normal text-blue" id="navigateMy">
                           ${user.displayName}님

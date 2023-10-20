@@ -24,7 +24,6 @@ export default class ArticleList extends Component {
     const skeletonArray = new Array(8).fill('');
 
     if (articlesMap.length === 0) {
-      console.log(skeletonArray);
       return skeletonArray
         .map(
           (_, index) =>

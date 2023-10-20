@@ -4,7 +4,7 @@ import { userStore } from '../store/user';
 import { createDom } from './Dom';
 
 const checkAuthentication = (currentRoute) => {
-  if (currentRoute.authentication && userStore.state.user === null) {
+  if (currentRoute.authentication && userStore.state.user === '') {
     return false;
   }
   return true;
@@ -23,7 +23,6 @@ export function routeRender() {
   const currentRoute = routes.find((route) => {
     return new RegExp(route.path + '/?$').test(location.pathname);
   });
-
   if (!checkAuthentication(currentRoute)) {
     redirectHome();
     return;
