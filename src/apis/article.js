@@ -1,8 +1,15 @@
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { db, storage } from './firebase';
 import { userStore } from '../store/user';
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
+import {
+  addDoc,
+  collection,
+  getDocs,
+  query,
+  serverTimestamp,
+} from 'firebase/firestore';
 import Swal from 'sweetalert2';
+import { articlesStore } from '../store/article';
 
 export const uploadImage = async (fileData, refId) => {
   const storageRef = ref(storage, refId);
@@ -13,10 +20,12 @@ export const uploadImage = async (fileData, refId) => {
 
 export const uploadArticleData = async (data) => {
   const uid = userStore.state.user.uid;
+  const userName = userStore.state.user.displayName;
   try {
     await addDoc(collection(db, 'article'), {
       ...data,
       uid,
+      userName,
       date: serverTimestamp(),
     });
     await Swal.fire('작성 완료!');
@@ -24,4 +33,27 @@ export const uploadArticleData = async (data) => {
     console.log(error);
     Swal.fire('알 수 없는 오류입니다');
   }
+};
+
+const convertResponseToArray = (response) => {
+  const responseArray = [];
+  response.forEach((doc) => {
+    const articles = doc.data();
+    responseArray.push({
+      title: articles.title,
+      date: articles.date,
+      imageUrl: articles.imageUrl,
+      uid: articles.uid,
+      id: doc.id,
+      content: articles.content,
+      userName: articles.userName,
+    });
+  });
+  return responseArray;
+};
+
+export const getArticles = async () => {
+  const getArticlesQuery = query(collection(db, 'article'));
+  const response = await getDocs(getArticlesQuery);
+  articlesStore.state.articles = convertResponseToArray(response);
 };
