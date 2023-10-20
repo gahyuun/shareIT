@@ -86,7 +86,7 @@ export default class Write extends Component {
     let imageUrl = null;
     const data = { title, content, imageUrl };
     if (existFile(file)) {
-      imageUrl = await uploadImage(file, uuidv4());
+      data.imageUrl = await uploadImage(file, uuidv4());
     }
     await uploadArticleData(data);
     navigate('/');
