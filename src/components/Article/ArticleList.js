@@ -20,6 +20,6 @@ export default class ArticleList extends Component {
       );
       return articleComponent.template();
     });
-    return `<div>${articlesMap.join('')}</div>`;
+    return articlesMap.join('');
   }
 }
