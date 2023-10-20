@@ -5,8 +5,8 @@ import { navigate } from '../../core/router';
 
 export default class Home extends Component {
   template() {
-    const articleListComponent = this.addChild(ArticleList, this.componentRoot);
-    return `<nav class="max-w-[81.25rem] mx-auto pt-[4.25rem]" id="home">
+    const articleListComponent = this.addChild(ArticleList, '#articleList');
+    return `<nav class="max-w-[81.25rem] mx-auto pt-[4.25rem]">
               <ul>
               <li class="text-5xl font-bold text-primary">shareIT</li>
               <li class="text-2xl font-semibold text-primary mt-[0.75rem]">개발자 아티클 공유 서비스</li>
@@ -16,7 +16,9 @@ export default class Home extends Component {
               </button>
               </ul>
             </nav>
+            <main id="articleList">
             ${articleListComponent.template()}
+            </mai>
             `;
   }
   setEvent() {

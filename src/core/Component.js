@@ -1,8 +1,8 @@
 import { updateDom } from './Dom';
 
 export class Component {
-  constructor(root = '', props = {}) {
-    this.componentRoot = root;
+  constructor(componentRoot = '', props = {}) {
+    this.componentRoot = componentRoot;
     this.eventListeners = [];
     this.children = [];
     this.state = {};
@@ -28,6 +28,8 @@ export class Component {
   }
 
   render() {
+    if (typeof this.componentRoot === 'string')
+      this.componentRoot = document.querySelector(this.componentRoot);
     updateDom(this);
   }
 
