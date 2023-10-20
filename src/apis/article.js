@@ -5,6 +5,7 @@ import {
   addDoc,
   collection,
   getDocs,
+  orderBy,
   query,
   serverTimestamp,
 } from 'firebase/firestore';
@@ -54,7 +55,10 @@ const convertResponseToArray = (response) => {
 };
 
 export const getArticles = async () => {
-  const getArticlesQuery = query(collection(db, 'article'));
+  const getArticlesQuery = query(
+    collection(db, 'article'),
+    orderBy('date', 'desc'),
+  );
   const response = await getDocs(getArticlesQuery);
   const articlesArray = convertResponseToArray(response);
   sliceContent(articlesArray, 0, 70);
