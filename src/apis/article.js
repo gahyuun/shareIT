@@ -12,6 +12,12 @@ import {
 import Swal from 'sweetalert2';
 import { articlesStore } from '../store/article';
 import { sliceContent } from '../utils/common';
+import {
+  ARTICLE_COLLECTION,
+  DATE_FIELD,
+  MAX_CONTENT_LENGTH,
+  START_INDEX,
+} from '../constants/article';
 
 export const uploadImage = async (fileData, refId) => {
   const storageRef = ref(storage, refId);
@@ -24,7 +30,7 @@ export const uploadArticleData = async (data) => {
   const uid = userStore.state.user.uid;
   const userName = userStore.state.user.displayName;
   try {
-    await addDoc(collection(db, 'article'), {
+    await addDoc(collection(db, ARTICLE_COLLECTION), {
       ...data,
       uid,
       userName,
@@ -56,11 +62,11 @@ const convertResponseToArray = (response) => {
 
 export const getArticles = async () => {
   const getArticlesQuery = query(
-    collection(db, 'article'),
-    orderBy('date', 'desc'),
+    collection(db, ARTICLE_COLLECTION),
+    orderBy(DATE_FIELD, 'desc'),
   );
   const response = await getDocs(getArticlesQuery);
   const articlesArray = convertResponseToArray(response);
-  sliceContent(articlesArray, 0, 70);
+  sliceContent(articlesArray, START_INDEX, MAX_CONTENT_LENGTH);
   articlesStore.state.articles = articlesArray;
 };
