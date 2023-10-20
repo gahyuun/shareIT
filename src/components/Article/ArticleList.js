@@ -20,6 +20,18 @@ export default class ArticleList extends Component {
       );
       return articleComponent.template();
     });
+
+    const skeletonArray = new Array(8).fill('');
+
+    if (articlesMap.length === 0) {
+      console.log(skeletonArray);
+      return skeletonArray
+        .map(
+          (_, index) =>
+            `<section key=${index} class="animate-pulse w-[18.75rem] h-[20rem] bg-slate-100 border-solid rounded-xl pb-1"></section>`,
+        )
+        .join('');
+    }
     return articlesMap.join('');
   }
 }
