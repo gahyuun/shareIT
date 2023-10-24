@@ -28,7 +28,7 @@ export default class Article extends Component {
   setEvent() {
     const { article } = this.props;
     this.addEvent('click', `#article-${article.id}`, () => {
-      navigate(`${ROUTES.DETAIL}/id?=${article.id}`);
+      navigate(`${ROUTES.DETAIL}?id=${article.id}`);
     });
   }
 }
