@@ -4,6 +4,8 @@ import { userStore } from '../store/user';
 import {
   addDoc,
   collection,
+  doc,
+  getDoc,
   getDocs,
   orderBy,
   query,
@@ -82,4 +84,11 @@ export const getUserArticles = async (uid) => {
   const userArticlesArray = convertResponseToArray(response);
   sliceContent(userArticlesArray, START_INDEX, MAX_CONTENT_LENGTH);
   articlesStore.state.userArticles = userArticlesArray;
+};
+
+export const getArticle = async (id) => {
+  if (!id) return;
+  const getArticleRef = doc(db, ARTICLE_COLLECTION, id);
+  const response = await getDoc(getArticleRef);
+  articlesStore.state.article = { ...response.data(), id };
 };
