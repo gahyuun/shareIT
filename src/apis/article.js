@@ -8,6 +8,7 @@ import {
   orderBy,
   query,
   serverTimestamp,
+  where,
 } from 'firebase/firestore';
 import Swal from 'sweetalert2';
 import { articlesStore } from '../store/article';
@@ -69,4 +70,16 @@ export const getArticles = async () => {
   const articlesArray = convertResponseToArray(response);
   sliceContent(articlesArray, START_INDEX, MAX_CONTENT_LENGTH);
   articlesStore.state.articles = articlesArray;
+};
+
+export const getUserArticles = async (uid) => {
+  if (!uid) return;
+  const getUserArticlesQuery = query(
+    collection(db, ARTICLE_COLLECTION),
+    where('uid', '==', uid),
+  );
+  const response = await getDocs(getUserArticlesQuery);
+  const userArticlesArray = convertResponseToArray(response);
+  sliceContent(userArticlesArray, START_INDEX, MAX_CONTENT_LENGTH);
+  articlesStore.state.userArticles = userArticlesArray;
 };
