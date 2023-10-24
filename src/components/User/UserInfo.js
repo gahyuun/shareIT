@@ -17,6 +17,8 @@ export default class UserInfo extends Component {
     `;
   }
   setEvent() {
-    this.addEvent('click', '#logoutButton', logout);
+    this.addEvent('click', '#logoutButton', async () => {
+      await logout();
+    });
   }
 }
