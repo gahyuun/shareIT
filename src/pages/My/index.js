@@ -1,6 +1,8 @@
 import { Component } from '../../core/Component';
 import { userStore } from '../../store/user';
-import { logout } from '../../apis/user';
+import UserArticleList from '../../components/Article/UserArticleList';
+import UserInfoSkeleton from '../../components/User/UserInfoSkeleton';
+import UserInfo from '../../components/User/UserInfo';
 
 export default class My extends Component {
   constructor(root = '', props = {}) {
@@ -11,18 +13,22 @@ export default class My extends Component {
   }
   template() {
     const user = userStore.state.user;
-    return `<article class="max-w-[46.875rem] h-[8.125rem] mx-auto mt-[8.4375rem] flex gap-[4rem]">
-                  ${
-                    user === 'loading'
-                      ? ''
-                      : `<img src="${user.photoURL}" class="w-[8.125rem] h-full rounded-full"/>
-                  <section class="flex flex-col justify-between py-[0.4rem]">
-                  <div class="text-[2rem] font-semibold text-primary">${user.displayName}님</div>
-                  <button class="border border-solid border-lightGray rounded-3xl w-[7.875rem] h-[2.75rem] text-xl font-normal"
-                  id="logoutButton"
-                  >로그아웃</button>
-                  </section>`
-                  }
+    if (user === 'loading') {
+      const userInfoSkeleton = this.addChild(
+        UserInfoSkeleton,
+        this.componentRoot,
+      );
+      return userInfoSkeleton.template();
+    }
+    const userArticleListComponent = this.addChild(
+      UserArticleList,
+      '#userArticleList',
+      user.uid,
+    );
+    const userInfo = this.addChild(UserInfo, '#userInfo');
+
+    return `<article class="max-w-[46.875rem] h-[8.125rem] mx-auto mt-[8.4375rem] flex gap-[4rem]" id="userInfo">
+                  ${userInfo.template()}
             </article>
             <main class="max-w-[46.875rem] mx-auto mt-[4.6875rem] pl-[0.75rem]">
               <section class="flex flex-col gap-[1.3rem]">
@@ -30,11 +36,10 @@ export default class My extends Component {
                 <div class="border-b border-gray"></div>
               </section>
               <div class="flex justify-center">
-              <section id="userArticleList"class="pt-[2.5rem] grid grid-cols-2 gap-y-12 gap-x-12">
-              </section></div>
+                <section id="userArticleList"class="pt-[2.5rem] grid grid-cols-2 gap-y-12 gap-x-12">
+                ${userArticleListComponent.template()}
+                </section>
+              </div>
             </main>`;
-  }
-  setEvent() {
-    this.addEvent('click', '#logoutButton', logout);
   }
 }
