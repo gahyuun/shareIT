@@ -23,7 +23,16 @@ export default class My extends Component {
                   >로그아웃</button>
                   </section>`
                   }
-            </article>`;
+            </article>
+            <main class="max-w-[46.875rem] mx-auto mt-[4.6875rem] pl-[0.75rem]">
+              <section class="flex flex-col gap-[1.3rem]">
+                <div class="text-3xl font-semibold text-blue200">작성한 글</div>
+                <div class="border-b border-gray"></div>
+              </section>
+              <div class="flex justify-center">
+              <section id="userArticleList"class="pt-[2.5rem] grid grid-cols-2 gap-y-12 gap-x-12">
+              </section></div>
+            </main>`;
   }
   setEvent() {
     this.addEvent('click', '#logoutButton', logout);
