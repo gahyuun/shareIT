@@ -48,6 +48,7 @@ export class Component {
     const getTarget = (eventDom) => {
       const targets = [...this.componentRoot.querySelectorAll(selector)];
       if (targets.includes(eventDom)) return eventDom;
+      return eventDom.closest(selector);
     };
 
     const eventListener = (event) => {
