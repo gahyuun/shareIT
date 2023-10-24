@@ -21,8 +21,8 @@ export class Component {
     this.render();
   }
 
-  addChild(child, ...args) {
-    const component = new child(...args);
+  addChild(child, componentRoot = '', props = {}) {
+    const component = new child(componentRoot, props);
     this.children.push(component);
     return component;
   }
@@ -55,6 +55,9 @@ export class Component {
       if (!target) return;
       callback(event, target);
     };
+
+    if (typeof this.componentRoot === 'string')
+      this.componentRoot = document.querySelector(this.componentRoot);
 
     this.componentRoot.addEventListener(eventType, eventListener);
     this.eventListeners.push({

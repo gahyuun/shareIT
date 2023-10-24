@@ -2,7 +2,7 @@ import { Component } from '../../core/Component';
 
 export default class Article extends Component {
   template() {
-    const article = this.props;
+    const { article } = this.props;
     return `<section class="w-[18.75rem] h-[20rem] border border-lightGray border-solid rounded-xl pb-1">
                 ${
                   article.imageUrl

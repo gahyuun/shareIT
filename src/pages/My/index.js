@@ -23,7 +23,7 @@ export default class My extends Component {
     const userArticleListComponent = this.addChild(
       UserArticleList,
       '#userArticleList',
-      user.uid,
+      { uid: user.uid },
     );
     const userInfo = this.addChild(UserInfo, '#userInfo');
 
