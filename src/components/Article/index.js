@@ -1,9 +1,12 @@
+import { ROUTES } from '../../constants/routes';
 import { Component } from '../../core/Component';
+import { navigate } from '../../core/router';
 
 export default class Article extends Component {
   template() {
     const { article } = this.props;
-    return `<section class="w-[18.75rem] h-[20rem] border border-lightGray border-solid rounded-xl pb-1">
+    return `<section class="w-[18.75rem] h-[20rem] border border-lightGray border-solid rounded-xl pb-1 cursor-pointer" 
+              id="article-${article.id}">
                 ${
                   article.imageUrl
                     ? `<img src="${article.imageUrl}" class="w-full h-[10.4375rem]  rounded-t-xl"/>`
@@ -21,5 +24,11 @@ export default class Article extends Component {
                     </div>
                 </section>
             </section>`;
+  }
+  setEvent() {
+    const { article } = this.props;
+    this.addEvent('click', `#article-${article.id}`, () => {
+      navigate(`${ROUTES.DETAIL}/id?=${article.id}`);
+    });
   }
 }
