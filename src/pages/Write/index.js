@@ -8,7 +8,7 @@ import { ROUTES } from '../../constants/routes';
 
 export default class Write extends Component {
   template() {
-    return `<section class="w-[47.625rem] mx-auto mt-[6rem]">
+    return `<section class="w-[47.625rem] mx-auto mt-[6rem] mb-[2rem]">
                 <form id="writeForm" class="gap-10 flex flex-col" type="submit">
                 <section class="w-[18.75rem] flex flex-col">
                 <div class="self-end mr-[0.5rem] text-gray underline underline-offset-1 cursor-pointer hidden"

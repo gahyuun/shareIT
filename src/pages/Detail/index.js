@@ -6,6 +6,7 @@ import { articlesStore } from '../../store/article';
 import { userStore } from '../../store/user';
 import DetailSkeleton from './DetailSkeleton';
 import { ROUTES } from '../../constants/routes';
+import { dateFormat } from '../../utils/common';
 
 export default class Detail extends Component {
   constructor(root = '', props = {}) {
@@ -27,7 +28,6 @@ export default class Detail extends Component {
       );
       return detailSkeletonComponent.template();
     }
-    console.log(article.ima);
     return `
     <main class="max-w-[46.875rem] mx-auto mt-[7rem] flex">
       ${
@@ -39,10 +39,10 @@ export default class Detail extends Component {
             <div class="font-semibold text-[2.5rem]">${article.title}</div>
             <div class="text-base font-normal text-gray">by ${
               article.userName
-            }님</div>
+            }님 | <span>${dateFormat(article.date.toDate())}</span></div>
             ${
               user.uid === article.uid
-                ? `   <div class="flex">
+                ? `<div class="flex">
             <button class="mr-[0.5rem] flex items-center justify-center text-white bg-primary text-sm 
             font-medium rounded-md w-[5.1rem] h-[2.4rem]" id="edit-button">수정</button>
             <button class="flex items-center justify-center text-white bg-primary text-sm 
