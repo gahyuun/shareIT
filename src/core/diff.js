@@ -1,3 +1,5 @@
+import { trim } from './Dom';
+
 export function updateAttributes(oldNode, newNode) {
   for (const { name, value } of [...newNode.attributes]) {
     if (value === oldNode.getAttribute(name)) continue;
@@ -31,9 +33,11 @@ export function updateElement(parent, newNode, oldNode) {
   }
   updateAttributes(oldNode, newNode);
 
-  const newChildren = [...newNode.childNodes];
-  const oldChildren = [...oldNode.childNodes];
+  const newChildren = trim([...newNode.childNodes]);
+  const oldChildren = trim([...oldNode.childNodes]);
+
   const maxLength = Math.max(newChildren.length, oldChildren.length);
+
   for (let i = 0; i < maxLength; i++) {
     updateElement(oldNode, newChildren[i], oldChildren[i]);
   }
