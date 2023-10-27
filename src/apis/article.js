@@ -1,9 +1,15 @@
-import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import {
+  deleteObject,
+  getDownloadURL,
+  ref,
+  uploadBytes,
+} from 'firebase/storage';
 import { db, storage } from './firebase';
 import { userStore } from '../store/user';
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
@@ -91,4 +97,9 @@ export const getArticle = async (id) => {
   const getArticleRef = doc(db, ARTICLE_COLLECTION, id);
   const response = await getDoc(getArticleRef);
   articlesStore.state.article = { ...response.data(), id };
+};
+
+export const deleteArticle = async (id, imageUrl) => {
+  if (imageUrl) deleteObject(ref(storage, imageUrl));
+  await deleteDoc(doc(db, ARTICLE_COLLECTION, id));
 };
