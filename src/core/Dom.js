@@ -1,4 +1,3 @@
-import { TEXT_NODE } from '../constants/dom';
 import { updateElement } from './diff';
 
 let oldComponent;
@@ -21,15 +20,6 @@ export function clearEvent(component) {
     child.clearEvent();
   });
 }
-export function trim(nodes) {
-  return nodes.filter((node) => {
-    if (node.nodeType === TEXT_NODE) {
-      const text = node.data.replaceAll('\n', '').trim();
-      if (text.length === 0) return false;
-    }
-    return true;
-  });
-}
 
 export function updateDom(component) {
   const { componentRoot } = component;
@@ -38,8 +28,8 @@ export function updateDom(component) {
   const newNode = componentRoot.cloneNode(true);
   newNode.innerHTML = component.template();
 
-  const oldChildNodes = trim([...componentRoot.childNodes]);
-  const newChildNodes = trim([...newNode.childNodes]);
+  const oldChildNodes = [...componentRoot.childNodes];
+  const newChildNodes = [...newNode.childNodes];
 
   const max = Math.max(oldChildNodes.length, newChildNodes.length);
   for (let i = 0; i < max; i++) {
@@ -58,9 +48,8 @@ export function createDom(component) {
 
   const newNode = componentRoot.cloneNode(true);
   newNode.innerHTML = component.template();
-  const oldChildNodes = trim([...componentRoot.childNodes]);
-  const newChildNodes = trim([...newNode.childNodes]);
-
+  const oldChildNodes = [...componentRoot.childNodes];
+  const newChildNodes = [...newNode.childNodes];
   const max = Math.max(oldChildNodes.length, newChildNodes.length);
 
   for (let i = 0; i < max; i++) {

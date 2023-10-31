@@ -1,5 +1,4 @@
-import { trim } from './Dom';
-
+import { TEXT_NODE } from '../constants/dom';
 export function updateAttributes(oldNode, newNode) {
   for (const { name, value } of [...newNode.attributes]) {
     if (value === oldNode.getAttribute(name)) continue;
@@ -9,6 +8,16 @@ export function updateAttributes(oldNode, newNode) {
     if (newNode.getAttribute(name) !== undefined) continue;
     oldNode.removeAttribute(name);
   }
+}
+
+export function trim(nodes) {
+  return nodes.filter((node) => {
+    if (node.nodeType === TEXT_NODE) {
+      const text = node.data.replaceAll('\n', '').trim();
+      if (text.length === 0) return false;
+    }
+    return true;
+  });
 }
 
 export function updateElement(parent, newNode, oldNode) {
