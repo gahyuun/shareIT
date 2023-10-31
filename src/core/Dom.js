@@ -9,7 +9,12 @@ export function enrollEvent(component) {
     child.setEvent();
   });
 }
-
+export function mounted(component) {
+  component.mounted();
+  component.children.map((child) => {
+    child.mounted();
+  });
+}
 export function clearEvent(component) {
   component.clearEvent();
   component.children.map((child) => {
@@ -41,6 +46,7 @@ export function updateDom(component) {
     updateElement(componentRoot, newChildNodes[i], oldChildNodes[i]);
   }
   enrollEvent(component);
+  mounted(component);
 } // 리렌더링
 
 export function createDom(component) {
@@ -61,4 +67,5 @@ export function createDom(component) {
     updateElement(componentRoot, newChildNodes[i], oldChildNodes[i]);
   }
   enrollEvent(component);
+  mounted(component);
 } // 렌더링
