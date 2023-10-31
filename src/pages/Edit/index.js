@@ -15,7 +15,7 @@ import { ROUTES } from '../../constants/routes';
 export default class Edit extends Component {
   constructor(root = '', props = {}) {
     super(root, props);
-    this.isDeleted = false;
+    this.isImageDeleted = false;
     const id = getUrlParam();
     articlesStore.state.article = {};
     getArticle(id);
@@ -34,17 +34,16 @@ export default class Edit extends Component {
                       hasImage ? 'block' : 'hidden'
                     }"
                      id="deleteImageButton">제거</div>
-                        <label for="file" id="imageContainer" class="w-[18.75rem] h-[10.4375rem] flex items-center justify-center gap-3 
-                        flex-col bg-cover bg-no-repeat bg-lightGray rounded-xl" style="background-image:url(${
-                          article.imageUrl
-                        })"}>
-                        <img src="${imageLogo}" alt="이미지 로고" id="imageLogo" style="display:${
-                          hasImage ? 'none' : 'block'
-                        }">
-                        <div class="w-[8.0625rem] h-[2.3125rem] bg-white rounded-md text-sm font-semibold flex 
-                        items-center justify-center cursor-pointer" id="thumbnailButton"style="display:${
+                     <div id="imageContainer" class="w-[18.75rem] h-[10.4375rem] flex items-center justify-center gap-3 
+                     flex-col bg-cover bg-no-repeat bg-lightGray rounded-xl" style="background-image:url(${
+                       article.imageUrl
+                     })"}>
+                        <label for="file" id="fileLabel" class="flex items-center justify-center gap-3 flex-col" style="display:${
                           hasImage ? 'none' : 'flex'
                         }">
+                        <img src="${imageLogo}" alt="이미지 로고" id="imageLogo">
+                        <div class="w-[8.0625rem] h-[2.3125rem] bg-white rounded-md text-sm font-semibold flex 
+                        items-center justify-center cursor-pointer" id="thumbnailButton">
                             썸네일 업로드
                         </div>
                         <input type="file" name="file" id="file" accept=".jpg, .png" class="hidden" />
@@ -67,31 +66,22 @@ export default class Edit extends Component {
 
   getImageElements() {
     const imageContainer = this.componentRoot.querySelector('#imageContainer');
-    const imageLogo = this.componentRoot.querySelector('#imageLogo');
-    const fileInput = this.componentRoot.querySelector('#file');
-    const thumbnailButton =
-      this.componentRoot.querySelector('#thumbnailButton');
+    const fileLabel = this.componentRoot.querySelector('#fileLabel');
     const deleteImageButton =
       this.componentRoot.querySelector('#deleteImageButton');
+    const fileInput = this.componentRoot.querySelector('#file');
     return {
       imageContainer,
-      imageLogo,
-      fileInput,
-      thumbnailButton,
+      fileLabel,
       deleteImageButton,
+      fileInput,
     };
   }
   handleReaderOnLoad(event) {
-    const {
-      imageContainer,
-      imageLogo,
-      thumbnailButton,
-      deleteImageButton,
-      fileInput,
-    } = this.getImageElements.bind(this)();
+    const { imageContainer, fileLabel, deleteImageButton } =
+      this.getImageElements.bind(this)();
     imageContainer.style.backgroundImage = `url(${event.currentTarget.result})`;
-    imageLogo.style.display = 'none';
-    thumbnailButton.style.display = 'none';
+    fileLabel.style.display = 'none';
     deleteImageButton.style.display = 'block';
   }
   previewImage(_, target) {
@@ -100,48 +90,28 @@ export default class Edit extends Component {
     reader.readAsDataURL(target.files[0]);
   }
   deletePreviewImage() {
-    const {
-      imageContainer,
-      imageLogo,
-      thumbnailButton,
-      deleteImageButton,
-      fileInput,
-    } = this.getImageElements.bind(this)();
-    this.isDeleted = true;
+    const { imageContainer, fileLabel, deleteImageButton, fileInput } =
+      this.getImageElements.bind(this)();
+    this.isImageDeleted = true;
     fileInput.value = '';
     imageContainer.style.backgroundImage = '';
-    imageLogo.style.display = 'block';
-    thumbnailButton.style.display = 'flex';
+    fileLabel.style.display = 'flex';
     deleteImageButton.style.display = 'none';
+  }
+  async handleImage(article, data, file) {
+    if (article.imageUrl && this.isImageDeleted) deleteImage(article.imageUrl);
+    if (existFile(file)) data.imageUrl = await uploadImage(file, uuidv4());
   }
   async handleSubmit(event, target) {
     event.preventDefault();
     const formData = new FormData(target);
     const file = formData.get('file');
-    console.log(file);
     const title = formData.get('title');
     const content = formData.get('content');
-    let imageUrl = null;
-    const data = { title, content, imageUrl };
+    const data = { title, content, imageUrl: article.imageUrl };
     const article = articlesStore.state.article;
 
-    // 1. 원래 이미지를 삭제하는 경우
-    if (article.imageUrl && !existFile(file) && this.isDeleted) {
-      deleteImage(article.imageUrl);
-    }
-    //2. 원래 이미지를 그대로 냅두는 경우
-    else if (article.imageUrl && !this.isDeleted) {
-      data.imageUrl = article.imageUrl;
-    }
-    //3 원래 이미지를 변경하는 경우
-    else if (article.imageUrl && this.isDeleted && existFile(file)) {
-      data.imageUrl = await uploadImage(file, uuidv4());
-    }
-    //4. 원래 없는 이미지를 추가하는 경우
-    else if (existFile(file)) {
-      data.imageUrl = await uploadImage(file, uuidv4());
-    }
-
+    await this.handleImage(article, data, file);
     await setArticleData(data, article.id);
     navigate(ROUTES.HOME);
   }
