@@ -1,5 +1,5 @@
 import Article from '.';
-import { getArticles } from '../../apis/article';
+import { getArticles, getNextArticles } from '../../apis/article';
 import { Component } from '../../core/Component';
 import { articlesStore } from '../../store/article';
 
@@ -30,5 +30,22 @@ export default class ArticleList extends Component {
         .join('');
     }
     return articlesMap.join('');
+  }
+  setObserver() {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          console.log('옵저버 함수 실행~');
+          getNextArticles();
+        }
+      });
+    });
+    console.log('observer');
+    console.log(this.componentRoot.lastChild);
+    if (this.componentRoot.lastChild)
+      observer.observe(this.componentRoot.lastChild);
+  }
+  mounted() {
+    this.setObserver();
   }
 }

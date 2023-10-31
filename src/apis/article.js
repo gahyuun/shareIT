@@ -13,9 +13,11 @@ import {
   doc,
   getDoc,
   getDocs,
+  limit,
   orderBy,
   query,
   serverTimestamp,
+  startAfter,
   updateDoc,
   where,
 } from 'firebase/firestore';
@@ -25,9 +27,15 @@ import { sliceContent } from '../utils/common';
 import {
   ARTICLE_COLLECTION,
   DATE_FIELD,
+  MAX_ARTICLES_LENGTH,
   MAX_CONTENT_LENGTH,
   START_INDEX,
 } from '../constants/article';
+
+let lastVisibleDoc = '';
+const setLastVisibleDoc = (response) => {
+  lastVisibleDoc = response.docs[response.docs.length - 1];
+};
 
 export const uploadImage = async (fileData, refId) => {
   const storageRef = ref(storage, refId);
@@ -74,11 +82,31 @@ export const getArticles = async () => {
   const getArticlesQuery = query(
     collection(db, ARTICLE_COLLECTION),
     orderBy(DATE_FIELD, 'desc'),
+    limit(MAX_ARTICLES_LENGTH),
   );
   const response = await getDocs(getArticlesQuery);
   const articlesArray = convertResponseToArray(response);
+  setLastVisibleDoc(response);
   sliceContent(articlesArray, START_INDEX, MAX_CONTENT_LENGTH);
   articlesStore.state.articles = articlesArray;
+};
+
+export const getNextArticles = async () => {
+  if (!lastVisibleDoc) return;
+  const getNextArticlesQuery = query(
+    collection(db, ARTICLE_COLLECTION),
+    orderBy(DATE_FIELD, 'desc'),
+    startAfter(lastVisibleDoc),
+    limit(MAX_ARTICLES_LENGTH),
+  );
+  const response = await getDocs(getNextArticlesQuery);
+  const articlesArray = convertResponseToArray(response);
+  sliceContent(articlesArray, START_INDEX, MAX_CONTENT_LENGTH);
+  articlesStore.state.articles = [
+    ...articlesStore.state.articles,
+    ...articlesArray,
+  ];
+  setLastVisibleDoc(response);
 };
 
 export const getUserArticles = async (uid) => {
