@@ -3,4 +3,5 @@ export const ROUTES = {
   MY: '/my',
   WRITE: '/write',
   DETAIL: '/detail',
+  EDIT: '/edit',
 };

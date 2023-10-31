@@ -16,6 +16,7 @@ import {
   orderBy,
   query,
   serverTimestamp,
+  updateDoc,
   where,
 } from 'firebase/firestore';
 import Swal from 'sweetalert2';
@@ -102,4 +103,15 @@ export const getArticle = async (id) => {
 export const deleteArticle = async (id, imageUrl) => {
   if (imageUrl) deleteObject(ref(storage, imageUrl));
   await deleteDoc(doc(db, ARTICLE_COLLECTION, id));
+};
+
+export const deleteImage = (imageUrl) => {
+  deleteObject(ref(storage, imageUrl));
+};
+
+export const setArticleData = async (data, id) => {
+  updateDoc(doc(db, ARTICLE_COLLECTION, id), {
+    ...data,
+    date: serverTimestamp(),
+  });
 };
