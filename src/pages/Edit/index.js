@@ -96,7 +96,10 @@ export default class Edit extends Component {
     deleteImageButton.style.display = 'none';
   }
   async handleImage(article, data, file) {
-    if (article.imageUrl && this.isImageDeleted) deleteImage(article.imageUrl);
+    if (article.imageUrl && this.isImageDeleted) {
+      deleteImage(article.imageUrl);
+      data.imageUrl = null;
+    }
     if (existFile(file)) data.imageUrl = await uploadImage(file, uuidv4());
   }
   async handleSubmit(event, target) {
