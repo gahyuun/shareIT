@@ -7,9 +7,6 @@ export default class ArticleList extends Component {
   constructor(root = '', props = {}) {
     super(root, props);
     getArticles();
-    articlesStore.subscribe('articles', () => {
-      this.render();
-    });
   }
   template() {
     const articlesMap = articlesStore.state.articles?.map((article) => {
@@ -32,18 +29,27 @@ export default class ArticleList extends Component {
     return articlesMap.join('');
   }
   setObserver() {
-    const observer = new IntersectionObserver((entries) => {
+    this.observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          console.log('옵저버 함수 실행~');
           getNextArticles();
         }
       });
     });
-    console.log('observer');
-    console.log(this.componentRoot.lastChild);
     if (this.componentRoot.lastChild)
-      observer.observe(this.componentRoot.lastChild);
+      this.observer.observe(this.componentRoot.lastChild);
+  }
+  setEvent() {
+    this.indexKey = articlesStore.subscribe('articles', () => {
+      this.render();
+    });
+  }
+  clearEvent() {
+    this.eventListeners.map(({ eventType, eventListener }) => {
+      this.componentRoot.removeEventListener(eventType, eventListener);
+    });
+    this.eventListeners = [];
+    articlesStore.unSubscribe('articles', this.indexKey);
   }
   mounted() {
     this.setObserver();

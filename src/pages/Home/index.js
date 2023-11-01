@@ -1,4 +1,3 @@
-import Article from '../../components/Article';
 import ArticleList from '../../components/Article/ArticleList';
 import { ROUTES } from '../../constants/routes';
 import { Component } from '../../core/Component';
@@ -19,7 +18,7 @@ export default class Home extends Component {
                 </ul>
               </nav>
               <main id="articleList" class="pt-[7.5rem] grid grid-cols-4 gap-y-16">
-                  ${articleListComponent.template()}
+              ${articleListComponent.template()}
               </main>
             </section>
             `;

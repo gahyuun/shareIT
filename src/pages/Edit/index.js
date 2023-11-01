@@ -19,9 +19,6 @@ export default class Edit extends Component {
     const id = getUrlParam();
     articlesStore.state.article = {};
     getArticle(id);
-    articlesStore.subscribe('article', () => {
-      this.render();
-    });
   }
   template() {
     const article = articlesStore.state.article;
@@ -108,8 +105,8 @@ export default class Edit extends Component {
     const file = formData.get('file');
     const title = formData.get('title');
     const content = formData.get('content');
-    const data = { title, content, imageUrl: article.imageUrl };
     const article = articlesStore.state.article;
+    const data = { title, content, imageUrl: article.imageUrl };
 
     await this.handleImage(article, data, file);
     await setArticleData(data, article.id);
@@ -123,5 +120,15 @@ export default class Edit extends Component {
       '#deleteImageButton',
       this.deletePreviewImage.bind(this),
     );
+    this.indexKey = articlesStore.subscribe('article', () => {
+      this.render();
+    });
+  }
+  clearEvent() {
+    this.eventListeners.map(({ eventType, eventListener }) => {
+      this.componentRoot.removeEventListener(eventType, eventListener);
+    });
+    this.eventListeners = [];
+    articlesStore.unSubscribe('article', this.indexKey);
   }
 }

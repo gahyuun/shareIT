@@ -14,9 +14,6 @@ export default class Detail extends Component {
     const id = getUrlParam();
     articlesStore.state.article = {};
     getArticle(id);
-    articlesStore.subscribe('article', () => {
-      this.render();
-    });
   }
   template() {
     const article = articlesStore.state.article;
@@ -75,5 +72,15 @@ export default class Detail extends Component {
     this.addEvent('click', '#edit-button', async () => {
       navigate(`${ROUTES.EDIT}?id=${article.id}`);
     });
+    this.indexKey = articlesStore.subscribe('article', () => {
+      this.render();
+    });
+  }
+  clearEvent() {
+    this.eventListeners.map(({ eventType, eventListener }) => {
+      this.componentRoot.removeEventListener(eventType, eventListener);
+    });
+    this.eventListeners = [];
+    articlesStore.unSubscribe('article', this.indexKey);
   }
 }

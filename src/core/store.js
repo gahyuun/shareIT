@@ -8,7 +8,9 @@ export class Store {
         set: (value) => {
           state[key] = value;
           if (Array.isArray(this.observers[key])) {
-            this.observers[key].forEach((observer) => observer(value));
+            this.observers[key].forEach((observer) => {
+              if (observer) observer(value);
+            });
           }
         },
       });
@@ -19,5 +21,10 @@ export class Store {
     Array.isArray(this.observers[key])
       ? this.observers[key].push(callback)
       : (this.observers[key] = [callback]);
+    const indexKey = this.observers[key].length - 1;
+    return indexKey;
+  }
+  unSubscribe(key, indexKey) {
+    this.observers[key][indexKey] = null;
   }
 }

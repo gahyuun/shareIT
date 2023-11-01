@@ -7,9 +7,6 @@ import UserInfo from '../../components/User/UserInfo';
 export default class My extends Component {
   constructor(root = '', props = {}) {
     super(root, props);
-    userStore.subscribe('user', () => {
-      this.render();
-    });
   }
   template() {
     const user = userStore.state.user;
@@ -41,5 +38,17 @@ export default class My extends Component {
                 </section>
               </div>
             </main>`;
+  }
+  setEvent() {
+    this.indexKey = userStore.subscribe('user', () => {
+      this.render();
+    });
+  }
+  clearEvent() {
+    this.eventListeners.map(({ eventType, eventListener }) => {
+      this.componentRoot.removeEventListener(eventType, eventListener);
+    });
+    this.eventListeners = [];
+    userStore.unSubscribe('user', this.indexKey);
   }
 }

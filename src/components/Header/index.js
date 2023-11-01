@@ -9,7 +9,7 @@ import { ROUTES } from '../../constants/routes';
 export default class Header extends Component {
   constructor(root) {
     super(root);
-    userStore.subscribe('user', () => {
+    this.indexKey = userStore.subscribe('user', () => {
       this.render();
     });
   }
@@ -45,5 +45,15 @@ export default class Header extends Component {
     this.addEvent('click', '.navigateHome', () => {
       navigate(ROUTES.HOME);
     });
+    this.indexKey = userStore.subscribe('user', () => {
+      this.render();
+    });
+  }
+  clearEvent() {
+    this.eventListeners.map(({ eventType, eventListener }) => {
+      this.componentRoot.removeEventListener(eventType, eventListener);
+    });
+    this.eventListeners = [];
+    userStore.unSubscribe('user', this.indexKey);
   }
 }
