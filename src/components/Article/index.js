@@ -9,7 +9,7 @@ export default class Article extends Component {
               id="article-${article.id}">
                 ${
                   article.imageUrl
-                    ? `<img src="${article.imageUrl}" class="w-full h-[10.4375rem]  rounded-t-xl"/>`
+                    ? `<img src="${article.imageUrl}" alt="썸네일" loading="lazy" class="w-full h-[10.4375rem]  rounded-t-xl"/>`
                     : ''
                 }
                 <section class="mt-[0.7rem] h-[8.25rem] px-1.5 flex flex-col justify-between">

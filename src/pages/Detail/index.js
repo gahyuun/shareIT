@@ -29,7 +29,7 @@ export default class Detail extends Component {
     <main class="max-w-[46.875rem] mx-auto mt-[7rem] flex">
       ${
         article.imageUrl
-          ? `<img src="${article.imageUrl}" class="w-[18.75rem] rounded-xl h-[10.4375rem] mr-[1.3rem]"/>`
+          ? `<img src="${article.imageUrl}" alt="article-thumbnail" class="w-[18.75rem] rounded-xl h-[10.4375rem] mr-[1.3rem]"/>`
           : ''
       }
         <section class="flex flex-col gap-4 max-w-[26rem] min-h-[10.4375rem]">
