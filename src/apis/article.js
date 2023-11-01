@@ -29,12 +29,14 @@ import {
   DATE_FIELD,
   MAX_ARTICLES_LENGTH,
   MAX_CONTENT_LENGTH,
+  MAX_USER_ARTICLES_LENGTH,
   START_INDEX,
 } from '../constants/article';
 
-let lastVisibleDoc = '';
-const setLastVisibleDoc = (response) => {
-  lastVisibleDoc = response.docs[response.docs.length - 1];
+let lastVisibleArticles = '';
+let lastVisibleUserArticles = '';
+const getLastVisibleDoc = (response) => {
+  return response.docs[response.docs.length - 1];
 };
 
 export const uploadImage = async (fileData, refId) => {
@@ -86,17 +88,17 @@ export const getArticles = async () => {
   );
   const response = await getDocs(getArticlesQuery);
   const articlesArray = convertResponseToArray(response);
-  setLastVisibleDoc(response);
+  lastVisibleArticles = getLastVisibleDoc(response);
   sliceContent(articlesArray, START_INDEX, MAX_CONTENT_LENGTH);
   articlesStore.state.articles = articlesArray;
 };
 
 export const getNextArticles = async () => {
-  if (!lastVisibleDoc) return;
+  if (!lastVisibleArticles) return;
   const getNextArticlesQuery = query(
     collection(db, ARTICLE_COLLECTION),
     orderBy(DATE_FIELD, 'desc'),
-    startAfter(lastVisibleDoc),
+    startAfter(lastVisibleArticles),
     limit(MAX_ARTICLES_LENGTH),
   );
   const response = await getDocs(getNextArticlesQuery);
@@ -106,7 +108,7 @@ export const getNextArticles = async () => {
     ...articlesStore.state.articles,
     ...articlesArray,
   ];
-  setLastVisibleDoc(response);
+  lastVisibleArticles = getLastVisibleDoc(response);
 };
 
 export const getUserArticles = async (uid) => {
@@ -114,11 +116,32 @@ export const getUserArticles = async (uid) => {
   const getUserArticlesQuery = query(
     collection(db, ARTICLE_COLLECTION),
     where('uid', '==', uid),
+    limit(MAX_USER_ARTICLES_LENGTH),
   );
   const response = await getDocs(getUserArticlesQuery);
   const userArticlesArray = convertResponseToArray(response);
   sliceContent(userArticlesArray, START_INDEX, MAX_CONTENT_LENGTH);
   articlesStore.state.userArticles = userArticlesArray;
+  lastVisibleUserArticles = getLastVisibleDoc(response);
+};
+
+export const getNextUserArticles = async (uid) => {
+  if (!uid) return;
+  if (!lastVisibleUserArticles) return;
+  const getNextUserArticlesQuery = query(
+    collection(db, ARTICLE_COLLECTION),
+    where('uid', '==', uid),
+    startAfter(lastVisibleUserArticles),
+    limit(MAX_USER_ARTICLES_LENGTH),
+  );
+  const response = await getDocs(getNextUserArticlesQuery);
+  const userArticlesArray = convertResponseToArray(response);
+  sliceContent(userArticlesArray, START_INDEX, MAX_CONTENT_LENGTH);
+  articlesStore.state.userArticles = [
+    ...articlesStore.state.userArticles,
+    ...userArticlesArray,
+  ];
+  lastVisibleUserArticles = getLastVisibleDoc(response);
 };
 
 export const getArticle = async (id) => {
