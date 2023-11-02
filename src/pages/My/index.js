@@ -24,16 +24,16 @@ export default class My extends Component {
     );
     const userInfo = this.addChild(UserInfo, '#userInfo');
 
-    return `<article class="max-w-[46.875rem] h-[8.125rem] mx-auto mt-[8.4375rem] flex gap-[4rem]" id="userInfo">
+    return `<article class="sm:max-w-[46.875rem] max-w-[21rem] h-[8.125rem] mx-auto mt-[8.4375rem] flex sm:gap-[4rem] gap-9" id="userInfo">
                   ${userInfo.template()}
             </article>
-            <main class="max-w-[46.875rem] mx-auto mt-[4.6875rem] pl-[0.75rem]">
+            <main class="max-w-[46.875rem] mx-auto sm:mt-[4.6875rem] mt-[2.5rem] pl-[0.75rem]">
               <section class="flex flex-col gap-[1.3rem]">
-                <div class="text-3xl font-semibold text-blue200">작성한 글</div>
+                <div class="sm:text-3xl text-2xl font-semibold text-blue200">작성한 글</div>
                 <div class="border-b border-gray"></div>
               </section>
               <div class="flex justify-center">
-                <section id="userArticleList"class="pt-[2.5rem] grid grid-cols-2 gap-y-12 gap-x-12">
+                <section id="userArticleList"class="pt-[2.5rem] sm:grid sm:grid-cols-2 gap-y-12 sm:gap-x-12 flex items-center justify-center flex-col">
                 ${userArticleListComponent.template()}
                 </section>
               </div>
