@@ -23,14 +23,11 @@ import {
 } from 'firebase/firestore';
 import Swal from 'sweetalert2';
 import { articlesStore } from '../store/article';
-import { sliceContent } from '../utils/common';
 import {
   ARTICLE_COLLECTION,
   DATE_FIELD,
   MAX_ARTICLES_LENGTH,
-  MAX_CONTENT_LENGTH,
   MAX_USER_ARTICLES_LENGTH,
-  START_INDEX,
 } from '../constants/article';
 
 let lastVisibleArticles = '';
@@ -89,7 +86,6 @@ export const getArticles = async () => {
   const response = await getDocs(getArticlesQuery);
   const articlesArray = convertResponseToArray(response);
   lastVisibleArticles = getLastVisibleDoc(response);
-  sliceContent(articlesArray, START_INDEX, MAX_CONTENT_LENGTH);
   articlesStore.state.articles = articlesArray;
 };
 
@@ -103,7 +99,6 @@ export const getNextArticles = async () => {
   );
   const response = await getDocs(getNextArticlesQuery);
   const articlesArray = convertResponseToArray(response);
-  sliceContent(articlesArray, START_INDEX, MAX_CONTENT_LENGTH);
   articlesStore.state.articles = [
     ...articlesStore.state.articles,
     ...articlesArray,
@@ -120,7 +115,6 @@ export const getUserArticles = async (uid) => {
   );
   const response = await getDocs(getUserArticlesQuery);
   const userArticlesArray = convertResponseToArray(response);
-  sliceContent(userArticlesArray, START_INDEX, MAX_CONTENT_LENGTH);
   articlesStore.state.userArticles = userArticlesArray;
   lastVisibleUserArticles = getLastVisibleDoc(response);
 };
@@ -136,7 +130,6 @@ export const getNextUserArticles = async (uid) => {
   );
   const response = await getDocs(getNextUserArticlesQuery);
   const userArticlesArray = convertResponseToArray(response);
-  sliceContent(userArticlesArray, START_INDEX, MAX_CONTENT_LENGTH);
   articlesStore.state.userArticles = [
     ...articlesStore.state.userArticles,
     ...userArticlesArray,
