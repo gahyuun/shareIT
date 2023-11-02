@@ -15,11 +15,11 @@ export default class Header extends Component {
   }
   template() {
     const user = userStore.state.user;
-    return `<header class="max-w-[81.25rem] mt-[1.6875rem] mx-auto">
+    return `<header class="2xl:max-w-[81.25rem] mt-[1.6875rem] mx-auto xl:max-w-[75rem] lg:max-w-[56.25rem]">
                 <section class="flex justify-between items-center">
                   <div class="flex items-center gap-[0.6875rem] cursor-pointer">
                     <img src="${logo}" alt="logo" class="w-[2.7rem] h-[2.5rem] navigateHome">
-                    <div class="text-3xl font-bold text-primary navigateHome">shareIT</div>
+                    <div class="lg:text-3xl text-2xl font-bold text-primary navigateHome">shareIT</div>
                   </div>
                   ${
                     user === 'loading'
