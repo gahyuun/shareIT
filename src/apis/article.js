@@ -84,9 +84,8 @@ export const getArticles = async () => {
     limit(MAX_ARTICLES_LENGTH),
   );
   const response = await getDocs(getArticlesQuery);
-  const articlesArray = convertResponseToArray(response);
   lastVisibleArticles = getLastVisibleDoc(response);
-  return articlesArray;
+  return convertResponseToArray(response);
 };
 
 export const getNextArticles = async () => {
@@ -98,9 +97,8 @@ export const getNextArticles = async () => {
     limit(MAX_ARTICLES_LENGTH),
   );
   const response = await getDocs(getNextArticlesQuery);
-  const articlesArray = convertResponseToArray(response);
   lastVisibleArticles = getLastVisibleDoc(response);
-  return articlesArray;
+  return convertResponseToArray(response);
 };
 
 export const getUserArticles = async (uid) => {
@@ -109,11 +107,11 @@ export const getUserArticles = async (uid) => {
     collection(db, ARTICLE_COLLECTION),
     where('uid', '==', uid),
     limit(MAX_USER_ARTICLES_LENGTH),
+    orderBy(DATE_FIELD, 'desc'),
   );
   const response = await getDocs(getUserArticlesQuery);
-  const userArticlesArray = convertResponseToArray(response);
-  articlesStore.state.userArticles = userArticlesArray;
   lastVisibleUserArticles = getLastVisibleDoc(response);
+  return convertResponseToArray(response);
 };
 
 export const getNextUserArticles = async (uid) => {
@@ -122,16 +120,13 @@ export const getNextUserArticles = async (uid) => {
   const getNextUserArticlesQuery = query(
     collection(db, ARTICLE_COLLECTION),
     where('uid', '==', uid),
+    orderBy(DATE_FIELD, 'desc'),
     startAfter(lastVisibleUserArticles),
     limit(MAX_USER_ARTICLES_LENGTH),
   );
   const response = await getDocs(getNextUserArticlesQuery);
-  const userArticlesArray = convertResponseToArray(response);
-  articlesStore.state.userArticles = [
-    ...articlesStore.state.userArticles,
-    ...userArticlesArray,
-  ];
   lastVisibleUserArticles = getLastVisibleDoc(response);
+  return convertResponseToArray(response);
 };
 
 export const getArticle = async (id) => {

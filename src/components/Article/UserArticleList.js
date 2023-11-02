@@ -7,50 +7,72 @@ export default class UserArticleList extends Component {
   constructor(root = '', props = {}) {
     super(root, props);
     this.uid = props.uid;
-    getUserArticles(this.uid);
+    this.getUserArticles();
+    this.lastVisibleIndex = 0;
+    this.renderingUserArticlesData = [];
   }
-  template() {
-    const userArticlesMap = articlesStore.state.userArticles?.map((article) => {
+
+  renderSkeleton() {
+    const skeletonArray = new Array(4).fill('');
+
+    return skeletonArray
+      .map(
+        (_, index) =>
+          `<section key=${index} class="animate-pulse w-[18.75rem] h-[20rem] bg-slate-100 border-solid rounded-xl pb-1"></section>`,
+      )
+      .join('');
+  }
+
+  setLastVisibleIndex(lastVisibleIndex) {
+    this.lastVisibleIndex = lastVisibleIndex;
+  }
+
+  updateRenderingUserArticlesData(userArticles) {
+    for (let i = this.lastVisibleIndex; i < userArticles.length; i++) {
+      const article = userArticles[i];
       const articleComponent = this.addChild(Article, this.componentRoot, {
         article,
       });
-      return articleComponent.template();
-    });
-
-    const skeletonArray = new Array(4).fill('');
-
-    if (userArticlesMap.length === 0) {
-      return skeletonArray
-        .map(
-          (_, index) =>
-            `<section key=${index} class="animate-pulse w-[18.75rem] h-[20rem] bg-slate-100 border-solid rounded-xl pb-1"></section>`,
-        )
-        .join('');
+      this.renderingUserArticlesData.push(articleComponent.template());
     }
-    return userArticlesMap.join('');
+    this.setLastVisibleIndex(userArticles.length);
+  }
+  template() {
+    const { userArticles } = this.state;
+    if (!userArticles) return this.renderSkeleton();
+
+    this.updateRenderingUserArticlesData(userArticles);
+    return this.renderingUserArticlesData.join('');
   }
   setObserver() {
-    const observer = new IntersectionObserver((entries) => {
+    this.observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          getNextUserArticles(this.uid);
+          this.getNextUserArticles(this.uid);
         }
       });
     });
     if (this.componentRoot.lastChild)
-      observer.observe(this.componentRoot.lastChild);
+      this.observer.observe(this.componentRoot.lastChild);
   }
-  setEvent() {
-    this.indexKey = articlesStore.subscribe('userArticles', () => {
-      this.render();
-    });
+  async getUserArticles() {
+    const userArticles = await getUserArticles(this.uid);
+    this.setState({ userArticles });
+  }
+  async getNextUserArticles() {
+    const userArticles = await getNextUserArticles(this.uid);
+    if (userArticles)
+      this.setState({
+        userArticles: [...this.state.userArticles, ...userArticles],
+      });
   }
   clearEvent() {
     this.eventListeners.map(({ eventType, eventListener }) => {
       this.componentRoot.removeEventListener(eventType, eventListener);
     });
     this.eventListeners = [];
-    articlesStore.unSubscribe('userArticles', this.indexKey);
+    if (this.componentRoot.lastChild)
+      this.observer.unobserve(this.componentRoot.lastChild);
   }
   mounted() {
     this.setObserver();
