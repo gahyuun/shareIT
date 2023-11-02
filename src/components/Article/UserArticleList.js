@@ -1,7 +1,6 @@
 import Article from '.';
 import { getNextUserArticles, getUserArticles } from '../../apis/article';
 import { Component } from '../../core/Component';
-import { articlesStore } from '../../store/article';
 
 export default class UserArticleList extends Component {
   constructor(root = '', props = {}) {

@@ -22,7 +22,6 @@ import {
   where,
 } from 'firebase/firestore';
 import Swal from 'sweetalert2';
-import { articlesStore } from '../store/article';
 import {
   ARTICLE_COLLECTION,
   DATE_FIELD,
@@ -133,7 +132,7 @@ export const getArticle = async (id) => {
   if (!id) return;
   const getArticleRef = doc(db, ARTICLE_COLLECTION, id);
   const response = await getDoc(getArticleRef);
-  articlesStore.state.article = { ...response.data(), id };
+  return { ...response.data(), id };
 };
 
 export const deleteArticle = async (id, imageUrl) => {

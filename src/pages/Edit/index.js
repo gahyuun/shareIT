@@ -1,6 +1,5 @@
 import { Component } from '../../core/Component';
 import imageLogo from '../../assets/imageLogo.svg';
-import { articlesStore } from '../../store/article';
 import {
   deleteImage,
   getArticle,
@@ -17,12 +16,11 @@ export default class Edit extends Component {
     super(root, props);
     this.isImageDeleted = false;
     const id = getUrlParam();
-    articlesStore.state.article = {};
-    getArticle(id);
+    this.getArticle(id);
   }
   template() {
-    const article = articlesStore.state.article;
-    if (article.id === undefined) return '';
+    const article = this.state.article;
+    if (!article) return '';
     let hasImage = article.imageUrl !== null;
     return `<section class="sm:w-[47.625rem] w-[21rem] mx-auto mt-[6rem] mb-[2rem]">
                     <form id="editForm" class="gap-10 flex flex-col" type="submit">
@@ -59,6 +57,10 @@ export default class Edit extends Component {
                         </section>
                     </form>
                 </section>`;
+  }
+  async getArticle(id) {
+    const article = await getArticle(id);
+    this.setState({ article });
   }
 
   getImageElements() {
@@ -108,7 +110,7 @@ export default class Edit extends Component {
     const file = formData.get('file');
     const title = formData.get('title');
     const content = formData.get('content');
-    const article = articlesStore.state.article;
+    const article = this.state.article;
     const data = { title, content, imageUrl: article.imageUrl };
 
     await this.handleImage(article, data, file);
@@ -123,15 +125,11 @@ export default class Edit extends Component {
       '#deleteImageButton',
       this.deletePreviewImage.bind(this),
     );
-    this.indexKey = articlesStore.subscribe('article', () => {
-      this.render();
-    });
   }
   clearEvent() {
     this.eventListeners.map(({ eventType, eventListener }) => {
       this.componentRoot.removeEventListener(eventType, eventListener);
     });
     this.eventListeners = [];
-    articlesStore.unSubscribe('article', this.indexKey);
   }
 }

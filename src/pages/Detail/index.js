@@ -2,7 +2,6 @@ import Swal from 'sweetalert2';
 import { deleteArticle, getArticle } from '../../apis/article';
 import { Component } from '../../core/Component';
 import { getUrlParam, navigate } from '../../core/router';
-import { articlesStore } from '../../store/article';
 import { userStore } from '../../store/user';
 import DetailSkeleton from './DetailSkeleton';
 import { ROUTES } from '../../constants/routes';
@@ -12,18 +11,20 @@ export default class Detail extends Component {
   constructor(root = '', props = {}) {
     super(root, props);
     const id = getUrlParam();
-    articlesStore.state.article = {};
-    getArticle(id);
+    this.getArticle(id);
+  }
+  renderSkeleton() {
+    const detailSkeletonComponent = this.addChild(
+      DetailSkeleton,
+      this.componentRoot,
+    );
+    return detailSkeletonComponent.template();
   }
   template() {
-    const article = articlesStore.state.article;
+    const article = this.state.article;
     const user = userStore.state.user;
-    if (article.id === undefined) {
-      const detailSkeletonComponent = this.addChild(
-        DetailSkeleton,
-        this.componentRoot,
-      );
-      return detailSkeletonComponent.template();
+    if (!article) {
+      return this.renderSkeleton();
     }
     return `
     <main class="max-w-[46.875rem] mx-auto sm:mt-[7rem] mt-[3rem] flex flex-col items-center justify-center sm:items-start sm:justify-normal sm:flex-row">
@@ -56,8 +57,9 @@ export default class Detail extends Component {
     ${article.content}
     </section>`;
   }
+
   setEvent() {
-    const article = articlesStore.state.article;
+    const article = this.state.article;
     this.addEvent('click', '#delete-button', async () => {
       const result = await Swal.fire({
         title: '정말 삭제하시겠습니까?',
@@ -74,15 +76,15 @@ export default class Detail extends Component {
     this.addEvent('click', '#edit-button', async () => {
       navigate(`${ROUTES.EDIT}?id=${article.id}`);
     });
-    this.indexKey = articlesStore.subscribe('article', () => {
-      this.render();
-    });
+  }
+  async getArticle(id) {
+    const article = await getArticle(id);
+    this.setState({ article });
   }
   clearEvent() {
     this.eventListeners.map(({ eventType, eventListener }) => {
       this.componentRoot.removeEventListener(eventType, eventListener);
     });
     this.eventListeners = [];
-    articlesStore.unSubscribe('article', this.indexKey);
   }
 }
