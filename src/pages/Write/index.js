@@ -8,7 +8,7 @@ import { ROUTES } from '../../constants/routes';
 
 export default class Write extends Component {
   template() {
-    return `<section class="w-[47.625rem] mx-auto mt-[6rem] mb-[2rem]">
+    return `<section class="sm:w-[47.625rem] w-[21rem] mx-auto mt-[6rem] mb-[2rem]">
                 <form id="writeForm" class="gap-10 flex flex-col" type="submit">
                 <section class="w-[18.75rem] flex flex-col">
                 <div class="self-end mr-[0.5rem] text-gray underline underline-offset-1 cursor-pointer hidden"
@@ -24,11 +24,11 @@ export default class Write extends Component {
                     </label> 
                     </section>
                     <section class="gap-5 flex flex-col">
-                        <input name="title" id="title" placeholder="제목을 입력해주세요" class="text-3xl font-medium
+                        <input name="title" id="title" placeholder="제목을 입력해주세요" class="sm:text-3xl text-2xl font-medium
                          placeholder:text-darkGray text-primary" required/>
-                        <div class="w-[52px] h-[5px] bg-darkGray"></div>
+                        <div class="w-[3.25rem] h-[0.3125rem] bg-darkGray"></div>
                         <textarea name="content" id="content" placeholder="내용을 입력해주세요"
-                         class="w-[47.625rem] min-h-[33rem] rounded-md border border-lightGray outline-none p-4" required></textarea>
+                         class="sm:w-[47.625rem] w-[21rem] min-h-[33rem] rounded-md border border-lightGray outline-none p-4" required></textarea>
                          <button class="bg-blue text-white text-lg w-[8rem] h-[2.3125rem] px-[0.5rem] rounded-md self-end" 
                          id="writeButton">등록</button>
                     </section>

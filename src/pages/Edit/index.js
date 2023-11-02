@@ -24,7 +24,7 @@ export default class Edit extends Component {
     const article = articlesStore.state.article;
     if (article.id === undefined) return '';
     let hasImage = article.imageUrl !== null;
-    return `<section class="w-[47.625rem] mx-auto mt-[6rem] mb-[2rem]">
+    return `<section class="sm:w-[47.625rem] w-[21rem] mx-auto mt-[6rem] mb-[2rem]">
                     <form id="editForm" class="gap-10 flex flex-col" type="submit">
                     <section class="w-[18.75rem] flex flex-col">
                     <div class="self-end mr-[0.5rem] text-gray underline underline-offset-1 cursor-pointer ${
@@ -51,7 +51,7 @@ export default class Edit extends Component {
                               article.title
                             }" class="text-3xl font-medium text-primary" required/>
                             <div class="w-[52px] h-[5px] bg-darkGray"></div>
-                            <textarea name="content" id="content" class="w-[47.625rem] min-h-[33rem] rounded-md border border-lightGray outline-none p-4" required>${
+                            <textarea name="content" id="content" class="sm:w-[47.625rem] w-[21rem] min-h-[33rem] rounded-md border border-lightGray outline-none p-4" required>${
                               article.content
                             }</textarea>
                              <button class="bg-blue text-white text-lg w-[8rem] h-[2.3125rem] px-[0.5rem] rounded-md self-end" 
