@@ -86,7 +86,7 @@ export const getArticles = async () => {
   const response = await getDocs(getArticlesQuery);
   const articlesArray = convertResponseToArray(response);
   lastVisibleArticles = getLastVisibleDoc(response);
-  articlesStore.state.articles = articlesArray;
+  return articlesArray;
 };
 
 export const getNextArticles = async () => {
@@ -99,11 +99,8 @@ export const getNextArticles = async () => {
   );
   const response = await getDocs(getNextArticlesQuery);
   const articlesArray = convertResponseToArray(response);
-  articlesStore.state.articles = [
-    ...articlesStore.state.articles,
-    ...articlesArray,
-  ];
   lastVisibleArticles = getLastVisibleDoc(response);
+  return articlesArray;
 };
 
 export const getUserArticles = async (uid) => {
