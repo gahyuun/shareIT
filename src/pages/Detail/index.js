@@ -26,14 +26,16 @@ export default class Detail extends Component {
       return detailSkeletonComponent.template();
     }
     return `
-    <main class="max-w-[46.875rem] mx-auto mt-[7rem] flex">
+    <main class="max-w-[46.875rem] mx-auto sm:mt-[7rem] mt-[3rem] flex flex-col items-center justify-center sm:items-start sm:justify-normal sm:flex-row">
       ${
         article.imageUrl
-          ? `<img src="${article.imageUrl}" alt="article-thumbnail" class="w-[18.75rem] rounded-xl h-[10.4375rem] mr-[1.3rem]"/>`
+          ? `<img src="${article.imageUrl}" alt="article-thumbnail" class="w-[18.75rem] rounded-xl h-[10.4375rem] sm:mr-[1.3rem]"/>`
           : ''
       }
-        <section class="flex flex-col gap-4 max-w-[26rem] min-h-[10.4375rem]">
-            <div class="font-semibold text-[2.5rem]">${article.title}</div>
+        <section class="flex flex-col gap-4 sm:w-[26rem] w-[18.75rem] sm:pt-0 pt-3 min-h-[10.4375rem]">
+            <div class="font-semibold sm:text-[2.5rem] text-2xl leading-10">${
+              article.title
+            }</div>
             <div class="text-base font-normal text-gray">by ${
               article.userName
             }님 | <span>${dateFormat(article.date.toDate())}</span></div>
