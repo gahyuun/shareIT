@@ -1,4 +1,3 @@
-import { Component } from '../../core/Component';
 import imageLogo from '../../assets/imageLogo.svg';
 import {
   deleteImage,
@@ -10,8 +9,9 @@ import { getUrlParam, navigate } from '../../core/router';
 import { existFile } from '../../utils/validate';
 import { v4 as uuidv4 } from 'uuid';
 import { ROUTES } from '../../constants/routes';
+import Create from '../../components/Create';
 
-export default class Edit extends Component {
+export default class Edit extends Create {
   constructor(root = '', props = {}) {
     super(root, props);
     this.isImageDeleted = false;
@@ -63,31 +63,6 @@ export default class Edit extends Component {
     this.setState({ article });
   }
 
-  getImageElements() {
-    const imageContainer = this.componentRoot.querySelector('#imageContainer');
-    const fileLabel = this.componentRoot.querySelector('#fileLabel');
-    const deleteImageButton =
-      this.componentRoot.querySelector('#deleteImageButton');
-    const fileInput = this.componentRoot.querySelector('#file');
-    return {
-      imageContainer,
-      fileLabel,
-      deleteImageButton,
-      fileInput,
-    };
-  }
-  handleReaderOnLoad(event) {
-    const { imageContainer, fileLabel, deleteImageButton } =
-      this.getImageElements.bind(this)();
-    imageContainer.style.backgroundImage = `url(${event.currentTarget.result})`;
-    fileLabel.style.display = 'none';
-    deleteImageButton.style.display = 'block';
-  }
-  previewImage(_, target) {
-    const reader = new FileReader();
-    reader.onload = this.handleReaderOnLoad.bind(this);
-    reader.readAsDataURL(target.files[0]);
-  }
   deletePreviewImage() {
     const { imageContainer, fileLabel, deleteImageButton, fileInput } =
       this.getImageElements.bind(this)();
@@ -125,11 +100,5 @@ export default class Edit extends Component {
       '#deleteImageButton',
       this.deletePreviewImage.bind(this),
     );
-  }
-  clearEvent() {
-    this.eventListeners.map(({ eventType, eventListener }) => {
-      this.componentRoot.removeEventListener(eventType, eventListener);
-    });
-    this.eventListeners = [];
   }
 }

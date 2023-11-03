@@ -1,20 +1,22 @@
-import { Component } from '../../core/Component';
 import imageLogo from '../../assets/imageLogo.svg';
 import { uploadArticleData, uploadImage } from '../../apis/article';
 import { v4 as uuidv4 } from 'uuid';
 import { existFile } from '../../utils/validate';
 import { navigate } from '../../core/router';
 import { ROUTES } from '../../constants/routes';
+import Create from '../../components/Create';
 
-export default class Write extends Component {
+export default class Write extends Create {
   template() {
     return `<section class="sm:w-[47.625rem] w-[21rem] mx-auto mt-[6rem] mb-[2rem]">
                 <form id="writeForm" class="gap-10 flex flex-col" type="submit">
                 <section class="w-[18.75rem] flex flex-col">
                 <div class="self-end mr-[0.5rem] text-gray underline underline-offset-1 cursor-pointer hidden"
                  id="deleteImageButton">제거</div>
-                    <label for="file" id="imageContainer" class="w-[18.75rem] h-[10.4375rem] flex items-center justify-center gap-3 
-                    flex-col bg-cover bg-no-repeat bg-lightGray rounded-xl">
+                 <div id="imageContainer" class="w-[18.75rem] h-[10.4375rem] flex items-center justify-center gap-3 
+                 flex-col bg-cover bg-no-repeat bg-lightGray rounded-xl">
+                    <label for="file" id="fileLabel" class="flex items-center justify-center gap-3 
+                    flex-col  bg-lightGray rounded-xl">
                     <img src="${imageLogo}" alt="이미지 로고" id="imageLogo">
                     <div class="w-[8.0625rem] h-[2.3125rem] bg-white rounded-md text-sm font-semibold flex 
                     items-center justify-center cursor-pointer" id="thumbnailButton">
@@ -35,48 +37,19 @@ export default class Write extends Component {
                 </form>
             </section>`;
   }
-  getImageElements() {
-    const imageContainer = this.componentRoot.querySelector('#imageContainer');
-    const imageLogo = this.componentRoot.querySelector('#imageLogo');
-    const fileInput = this.componentRoot.querySelector('#file');
-    const thumbnailButton =
-      this.componentRoot.querySelector('#thumbnailButton');
-    const deleteImageButton =
-      this.componentRoot.querySelector('#deleteImageButton');
-    return {
-      imageContainer,
-      imageLogo,
-      fileInput,
-      thumbnailButton,
-      deleteImageButton,
-    };
-  }
-  handleReaderOnLoad(event) {
-    const { imageContainer, imageLogo, thumbnailButton, deleteImageButton } =
-      this.getImageElements.bind(this)();
-    imageContainer.style.backgroundImage = `url(${event.currentTarget.result})`;
-    imageLogo.style.display = 'none';
-    thumbnailButton.style.display = 'none';
-    deleteImageButton.style.display = 'block';
-  }
-  previewImage(_, target) {
-    const reader = new FileReader();
-    reader.onload = this.handleReaderOnLoad.bind(this);
-    reader.readAsDataURL(target.files[0]);
-  }
+
   deletePreviewImage() {
-    const {
-      imageContainer,
-      imageLogo,
-      thumbnailButton,
-      deleteImageButton,
-      fileInput,
-    } = this.getImageElements.bind(this)();
+    const { imageContainer, fileLabel, deleteImageButton, fileInput } =
+      this.getImageElements.bind(this)();
     fileInput.value = '';
     imageContainer.style.backgroundImage = '';
-    imageLogo.style.display = 'block';
-    thumbnailButton.style.display = 'flex';
+    fileLabel.style.display = 'flex';
     deleteImageButton.style.display = 'none';
+  }
+  async handleImage(file, data) {
+    if (existFile(file)) {
+      data.imageUrl = await uploadImage(file, uuidv4());
+    }
   }
   async handleSubmit(event, target) {
     event.preventDefault();
@@ -86,14 +59,13 @@ export default class Write extends Component {
     const content = formData.get('content');
     let imageUrl = null;
     const data = { title, content, imageUrl };
-    if (existFile(file)) {
-      data.imageUrl = await uploadImage(file, uuidv4());
-    }
+
+    await this.handleImage(file, data);
     await uploadArticleData(data);
     navigate(ROUTES.HOME);
   }
   setEvent() {
-    this.addEvent('submit', '#writeForm', this.handleSubmit);
+    this.addEvent('submit', '#writeForm', this.handleSubmit.bind(this));
     this.addEvent('change', '#file', this.previewImage.bind(this));
     this.addEvent(
       'click',

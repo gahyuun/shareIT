@@ -145,8 +145,7 @@ export const deleteImage = (imageUrl) => {
 };
 
 export const setArticleData = async (data, id) => {
-  updateDoc(doc(db, ARTICLE_COLLECTION, id), {
+  await updateDoc(doc(db, ARTICLE_COLLECTION, id), {
     ...data,
-    date: serverTimestamp(),
   });
 };
