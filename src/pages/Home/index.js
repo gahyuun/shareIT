@@ -12,7 +12,7 @@ export default class Home extends Component {
                   <li class="md:text-5xl font-bold text-primary text-3xl">shareIT</li>
                   <li class="md:text-2xl font-semibold text-primary mt-[0.75rem] text-lg">개발자 아티클 공유 서비스</li>
                   <li class="md:text-xl font-normal text-gray md:mt-[1.6875rem] mt-[1rem] text-base">아티클과 아티클에 대한 당신의 생각을 공유해주세요!</li>
-                  <button class="bg-blue text-white w-[8rem] h-[2.3125rem] px-[0.5rem] rounded-md mt-8" id="navigateWrite">
+                  <button class="bg-blue hover:bg-blue300 text-white w-[8rem] h-[2.3125rem] px-[0.5rem] rounded-md mt-8" id="navigateWrite">
                   공유하러 가기
                   </button>
                 </ul>

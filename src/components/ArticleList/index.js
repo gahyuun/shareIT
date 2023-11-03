@@ -21,8 +21,8 @@ export default class ArticleList extends Component {
       .join('');
   }
   updateRenderingArticlesData(articles) {
-    for (let i = this.lastVisibleIndex; i < articles.length; i++) {
-      const article = articles[i];
+    for (let index = this.lastVisibleIndex; index < articles.length; index++) {
+      const article = articles[index];
       const articleComponent = this.addChild(Article, this.componentRoot, {
         article,
       });
