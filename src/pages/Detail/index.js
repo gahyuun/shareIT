@@ -10,7 +10,7 @@ import { dateFormat } from '../../utils/common';
 export default class Detail extends Component {
   constructor(root = '', props = {}) {
     super(root, props);
-    const id = getUrlParam();
+    const { id } = getUrlParam();
     this.getArticle(id);
   }
   renderSkeleton() {

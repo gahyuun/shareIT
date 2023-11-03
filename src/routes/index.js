@@ -9,6 +9,6 @@ export const routes = [
   { path: ROUTES.HOME, component: Home, authentication: false },
   { path: ROUTES.WRITE, component: Write, authentication: true },
   { path: ROUTES.MY, component: My, authentication: true },
-  { path: ROUTES.DETAIL, component: Detail, authentication: false },
+  { path: `${ROUTES.DETAIL}/:id`, component: Detail, authentication: false },
   { path: ROUTES.EDIT, component: Edit, authentication: false },
 ];

@@ -14,6 +14,12 @@ const redirectHome = () => {
   Swal.fire('로그인 후 이용하실 수 있습니다');
   navigate('/');
 };
+
+let routePath = '';
+
+const pathToRegex = (path) =>
+  new RegExp('^' + path.replace(/\//g, '\\/').replace(/:\w+/g, '(.+)') + '$');
+
 export function routeRender() {
   if (!location.pathname) {
     history.replaceState(null, '', '/');
@@ -21,8 +27,10 @@ export function routeRender() {
   const root = document.querySelector('router-view');
 
   const currentRoute = routes.find((route) => {
-    return new RegExp(route.path + '/?$').test(location.pathname);
+    routePath = route.path;
+    return location.pathname.match(pathToRegex(route.path));
   });
+
   if (!checkAuthentication(currentRoute)) {
     redirectHome();
     return;
@@ -33,8 +41,16 @@ export function routeRender() {
 }
 
 export const getUrlParam = () => {
-  const [id, value] = location.search.slice(1).split('=');
-  return value;
+  const result = location.pathname.match(pathToRegex(routePath));
+  const values = result.slice(1);
+  const keys = Array.from(routePath.matchAll(/:(\w+)/g)).map(
+    (result) => result[1],
+  );
+  return Object.fromEntries(
+    keys.map((key, index) => {
+      return [key, values[index]];
+    }),
+  );
 };
 
 export const navigate = (url = '/') => {
