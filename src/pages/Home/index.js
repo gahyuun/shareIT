@@ -1,11 +1,11 @@
-import ArticleList from '../../components/Article/ArticleList';
+import HomeArticleList from '../../components/ArticleList/HomeArticleList';
 import { ROUTES } from '../../constants/routes';
 import { Component } from '../../core/Component';
 import { navigate } from '../../core/router';
 
 export default class Home extends Component {
   template() {
-    const articleListComponent = this.addChild(ArticleList, '#articleList');
+    const articleListComponent = this.addChild(HomeArticleList, '#articleList');
     return `<section class="2xl:max-w-[81.25rem] mx-auto xl:max-w-[75rem] lg:max-w-[58rem]">
               <nav class="md:pt-[4.25rem] pt-[2rem] lg:px-0 px-[0.5rem]">
                 <ul>

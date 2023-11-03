@@ -1,11 +1,9 @@
-import Article from '.';
-import { getArticles, getNextArticles } from '../../apis/article';
 import { Component } from '../../core/Component';
+import Article from '../Article';
 
 export default class ArticleList extends Component {
   constructor(root = '', props = {}) {
     super(root, props);
-    this.getArticles();
     this.lastVisibleIndex = 0;
     this.renderingArticlesData = [];
   }
@@ -32,27 +30,7 @@ export default class ArticleList extends Component {
     }
     this.setLastVisibleIndex(articles.length);
   }
-  template() {
-    const { articles } = this.state;
-    if (!articles) {
-      return this.renderSkeleton();
-    }
-    this.updateRenderingArticlesData(articles);
-    return this.renderingArticlesData.join('');
-  }
 
-  setObserver() {
-    this.observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          this.getNextArticles();
-        }
-      });
-    });
-    if (this.componentRoot.lastChild) {
-      this.observer.observe(this.componentRoot.lastChild);
-    }
-  }
   clearEvent() {
     this.eventListeners.map(({ eventType, eventListener }) => {
       this.componentRoot.removeEventListener(eventType, eventListener);
@@ -61,15 +39,7 @@ export default class ArticleList extends Component {
     if (this.componentRoot.lastChild)
       this.observer.unobserve(this.componentRoot.lastChild);
   }
-  async getArticles() {
-    const articles = await getArticles();
-    this.setState({ articles });
-  }
-  async getNextArticles() {
-    const articles = await getNextArticles();
-    if (articles)
-      this.setState({ articles: [...this.state.articles, ...articles] });
-  }
+
   mounted() {
     this.setObserver();
   }

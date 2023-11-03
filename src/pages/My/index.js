@@ -1,8 +1,8 @@
 import { Component } from '../../core/Component';
 import { userStore } from '../../store/user';
-import UserArticleList from '../../components/Article/UserArticleList';
 import UserInfoSkeleton from '../../components/User/UserInfoSkeleton';
 import UserInfo from '../../components/User/UserInfo';
+import UserArticleList from '../../components/ArticleList/UserArticleList';
 
 export default class My extends Component {
   constructor(root = '', props = {}) {
