@@ -10,6 +10,7 @@ import { existFile } from '../../utils/validate';
 import { v4 as uuidv4 } from 'uuid';
 import { ROUTES } from '../../constants/routes';
 import Create from '../../components/Create';
+import Swal from 'sweetalert2';
 
 export default class Edit extends Create {
   constructor(root = '', props = {}) {
@@ -89,8 +90,12 @@ export default class Edit extends Create {
     const data = { title, content, imageUrl: article.imageUrl };
 
     await this.handleImage(article, data, file);
-    await setArticleData(data, article.id);
-    navigate(ROUTES.HOME);
+    try {
+      await setArticleData(data, article.id);
+      navigate(ROUTES.HOME);
+    } catch (error) {
+      Swal.fire('알 수 없는 오류입니다');
+    }
   }
   setEvent() {
     this.addEvent('submit', '#editForm', this.handleSubmit.bind(this));

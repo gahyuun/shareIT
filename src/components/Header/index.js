@@ -1,10 +1,9 @@
 import { Component } from '../../core/Component';
 import logo from '../../assets/logo.png';
-import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
-import { auth } from '../../apis/firebase';
 import { userStore } from '../../store/user';
 import { navigate } from '../../core/router';
 import { ROUTES } from '../../constants/routes';
+import { login } from '../../apis/user';
 
 export default class Header extends Component {
   constructor(root) {
@@ -34,10 +33,7 @@ export default class Header extends Component {
             </header>`;
   }
   setEvent() {
-    const provider = new GoogleAuthProvider();
-    this.addEvent('click', '#loginButton', async () => {
-      await signInWithPopup(auth, provider);
-    });
+    this.addEvent('click', '#loginButton', login);
 
     this.addEvent('click', '#navigateMy', () => {
       navigate(ROUTES.MY);

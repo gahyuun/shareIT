@@ -5,6 +5,7 @@ import { existFile } from '../../utils/validate';
 import { navigate } from '../../core/router';
 import { ROUTES } from '../../constants/routes';
 import Create from '../../components/Create';
+import Swal from 'sweetalert2';
 
 export default class Write extends Create {
   template() {
@@ -61,8 +62,12 @@ export default class Write extends Create {
     const data = { title, content, imageUrl };
 
     await this.handleImage(file, data);
-    await uploadArticleData(data);
-    navigate(ROUTES.HOME);
+    try {
+      await uploadArticleData(data);
+      navigate(ROUTES.HOME);
+    } catch (error) {
+      Swal.fire('알 수 없는 오류입니다');
+    }
   }
   setEvent() {
     this.addEvent('submit', '#writeForm', this.handleSubmit.bind(this));

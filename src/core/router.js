@@ -1,10 +1,9 @@
 import Swal from 'sweetalert2';
 import { routes } from '../routes';
-import { userStore } from '../store/user';
 import { createDom } from './Dom';
 
 const checkAuthentication = (currentRoute) => {
-  if (currentRoute.authentication && userStore.state.user === '') {
+  if (currentRoute.authentication && !localStorage.getItem('userInfo')) {
     return false;
   }
   return true;
@@ -30,7 +29,6 @@ export function routeRender() {
     routePath = route.path;
     return location.pathname.match(pathToRegex(route.path));
   });
-
   if (!checkAuthentication(currentRoute)) {
     redirectHome();
     return;
