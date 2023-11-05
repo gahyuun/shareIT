@@ -75,10 +75,15 @@ export default class Edit extends Create {
   }
   async handleImage(article, data, file) {
     if (article.imageUrl && this.isImageDeleted) {
-      deleteImage(article.imageUrl);
       data.imageUrl = null;
     }
     if (existFile(file)) data.imageUrl = await uploadImage(file, uuidv4());
+  }
+
+  deleteImage() {
+    if (article.imageUrl && this.isImageDeleted) {
+      deleteImage(article.imageUrl);
+    }
   }
   async handleSubmit(event, target) {
     event.preventDefault();
@@ -92,6 +97,7 @@ export default class Edit extends Create {
     await this.handleImage(article, data, file);
     try {
       await setArticleData(data, article.id);
+      this.deleteImage();
       navigate(ROUTES.HOME);
     } catch (error) {
       Swal.fire('알 수 없는 오류입니다');
