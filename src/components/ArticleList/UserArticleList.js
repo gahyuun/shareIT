@@ -18,7 +18,6 @@ export default class UserArticleList extends ArticleList {
     this.observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          console.log('user article intersection observer');
           this.getNextUserArticles(this.uid);
         }
       });

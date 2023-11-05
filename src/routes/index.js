@@ -10,5 +10,5 @@ export const routes = [
   { path: ROUTES.WRITE, component: Write, authentication: true },
   { path: ROUTES.MY, component: My, authentication: true },
   { path: `${ROUTES.DETAIL}/:id`, component: Detail, authentication: false },
-  { path: ROUTES.EDIT, component: Edit, authentication: false },
+  { path: `${ROUTES.EDIT}/:id`, component: Edit, authentication: false },
 ];

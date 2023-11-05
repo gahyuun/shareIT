@@ -74,7 +74,7 @@ export default class Detail extends Component {
     });
 
     this.addEvent('click', '#edit-button', async () => {
-      navigate(`${ROUTES.EDIT}?id=${article.id}`);
+      navigate(`${ROUTES.EDIT}/${article.id}`);
     });
   }
   async getArticle(id) {

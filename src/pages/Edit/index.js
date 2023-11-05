@@ -15,7 +15,7 @@ export default class Edit extends Create {
   constructor(root = '', props = {}) {
     super(root, props);
     this.isImageDeleted = false;
-    const id = getUrlParam();
+    const { id } = getUrlParam();
     this.getArticle(id);
   }
   template() {
