@@ -81,7 +81,7 @@ export default class Edit extends Create {
   }
 
   deleteImage() {
-    if (article.imageUrl && this.isImageDeleted) {
+    if (this.state.article.imageUrl && this.isImageDeleted) {
       deleteImage(article.imageUrl);
     }
   }
@@ -93,15 +93,10 @@ export default class Edit extends Create {
     const content = formData.get('content');
     const article = this.state.article;
     const data = { title, content, imageUrl: article.imageUrl };
-
     await this.handleImage(article, data, file);
-    try {
-      await setArticleData(data, article.id);
-      this.deleteImage();
-      navigate(ROUTES.HOME);
-    } catch (error) {
-      Swal.fire('알 수 없는 오류입니다');
-    }
+    await setArticleData(data, article.id);
+    this.deleteImage();
+    navigate(ROUTES.HOME);
   }
   setEvent() {
     this.addEvent('submit', '#editForm', this.handleSubmit.bind(this));
