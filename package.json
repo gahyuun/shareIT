@@ -39,6 +39,7 @@
     "firebase": "^10.5.0",
     "postcss-loader": "^7.3.3",
     "sweetalert2": "^11.7.32",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "vercel": "^33.5.4"
   }
 }
