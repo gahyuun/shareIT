@@ -82,7 +82,7 @@ export default class Edit extends Create {
 
   deleteImage() {
     if (this.state.article.imageUrl && this.isImageDeleted) {
-      deleteImage(article.imageUrl);
+      deleteImage(this.state.article.imageUrl);
     }
   }
   async handleSubmit(event, target) {
