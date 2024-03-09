@@ -10,7 +10,6 @@ import { existFile } from '../../utils/validate';
 import { v4 as uuidv4 } from 'uuid';
 import { ROUTES } from '../../constants/routes';
 import Create from '../../components/Create';
-import Swal from 'sweetalert2';
 
 export default class Edit extends Create {
   constructor(root = '', props = {}) {
@@ -29,11 +28,11 @@ export default class Edit extends Create {
                     <div class="self-end mr-[0.5rem] text-gray underline underline-offset-1 cursor-pointer ${
                       hasImage ? 'block' : 'hidden'
                     }"
-                     id="deleteImageButton">제거</div>
-                     <div id="imageContainer" class="w-[18.75rem] h-[10.4375rem] flex items-center justify-center gap-3 
-                     flex-col bg-cover bg-no-repeat bg-lightGray rounded-xl" style="background-image:url(${
-                       article.imageUrl
-                     })"}>
+                    id="deleteImageButton">제거</div>
+                      <div id="imageContainer" class="w-[18.75rem] h-[10.4375rem] flex items-center justify-center gap-3 
+                      flex-col bg-cover bg-no-repeat bg-lightGray rounded-xl" style="background-image:url(${
+                        article.imageUrl
+                      })"}>
                         <label for="file" id="fileLabel" class="flex items-center justify-center gap-3 flex-col" style="display:${
                           hasImage ? 'none' : 'flex'
                         }">
@@ -53,8 +52,8 @@ export default class Edit extends Create {
                             <textarea name="content" id="content" class="sm:w-[47.625rem] w-[21rem] min-h-[33rem] rounded-md border border-lightGray outline-none p-4" required>${
                               article.content
                             }</textarea>
-                             <button class="bg-blue text-white text-lg w-[8rem] h-[2.3125rem] px-[0.5rem] rounded-md self-end" 
-                             id="writeButton">수정</button>
+                              <button class="bg-blue text-white text-lg w-[8rem] h-[2.3125rem] px-[0.5rem] rounded-md self-end" 
+                              id="writeButton">수정</button>
                         </section>
                     </form>
                 </section>`;
