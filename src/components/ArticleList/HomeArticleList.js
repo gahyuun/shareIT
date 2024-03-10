@@ -22,9 +22,8 @@ export default class HomeArticleList extends ArticleList {
         }
       });
     });
-    if (this.componentRoot.lastChild) {
+    if (typeof this.componentRoot.lastChild === HTMLElement)
       this.observer.observe(this.componentRoot.lastChild);
-    }
   }
   async getArticles() {
     const articles = await getArticles();

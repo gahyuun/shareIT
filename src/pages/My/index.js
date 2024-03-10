@@ -33,8 +33,7 @@ export default class My extends Component {
                 <div class="border-b border-gray"></div>
               </section>
               <div class="flex justify-center">
-                <section id="userArticleList"class="pt-[2.5rem] sm:grid sm:grid-cols-2 gap-y-12 sm:gap-x-12 flex items-center justify-center flex-col">
-                ${userArticleListComponent.template()}</section></div></main>`;
+                <section id="userArticleList"class="pt-[2.5rem] sm:grid sm:grid-cols-2 gap-y-12 sm:gap-x-12 flex items-center justify-center flex-col">${userArticleListComponent.template()}</section></div></main>`;
   }
   setEvent() {
     this.indexKey = userStore.subscribe('user', () => {

@@ -18,8 +18,7 @@ export default class Home extends Component {
                 </ul>
               </nav>
               <main id="articleList" class="lg:pt-[7.5rem] pt-[4rem] md:grid xl:grid-cols-4 flex items-center justify-center flex-col
-              lg:grid-cols-3 md:grid-cols-2 gap-y-16">
-              ${articleListComponent.template()}</main></section>
+              lg:grid-cols-3 md:grid-cols-2 gap-y-16">${articleListComponent.template()}</main></section>
             `;
   }
   setEvent() {

@@ -22,7 +22,7 @@ export default class UserArticleList extends ArticleList {
         }
       });
     });
-    if (this.componentRoot.lastChild)
+    if (typeof this.componentRoot.lastChild === HTMLElement)
       this.observer.observe(this.componentRoot.lastChild);
   }
   async getUserArticles() {
