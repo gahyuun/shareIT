@@ -20,7 +20,8 @@ export default class Edit extends Create {
   }
   template() {
     const article = this.state.article;
-    if (!article) return '';
+    if (article === undefined) return '';
+    if (article === null) return '';
     let hasImage = article.imageUrl !== null;
     return `<section class="sm:w-[47.625rem] w-[21rem] mx-auto mt-[6rem] mb-[2rem]">
                     <form id="editForm" class="gap-10 flex flex-col" type="submit">

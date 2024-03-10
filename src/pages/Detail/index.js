@@ -6,6 +6,7 @@ import { userStore } from '../../store/user';
 import DetailSkeleton from './DetailSkeleton';
 import { ROUTES } from '../../constants/routes';
 import { dateFormat } from '../../utils/common';
+import NotFound from '../../components/NotFound';
 
 export default class Detail extends Component {
   constructor(root = '', props = {}) {
@@ -20,11 +21,18 @@ export default class Detail extends Component {
     );
     return detailSkeletonComponent.template();
   }
+  renderNotFound() {
+    const notFoundComponent = this.addChild(NotFound, this.componentRoot);
+    return notFoundComponent.template();
+  }
   template() {
     const article = this.state.article;
     const user = userStore.state.user;
-    if (!article) {
-      return this.renderSkeleton();
+    if (article === null) {
+      return this.renderNotFound();
+    }
+    if (article === undefined) {
+      return '';
     }
     return `
     <main class="max-w-[46.875rem] mx-auto sm:mt-[7rem] mt-[3rem] flex flex-col items-center justify-center sm:items-start sm:justify-normal sm:flex-row">
