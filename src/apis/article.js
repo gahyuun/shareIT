@@ -132,6 +132,7 @@ export const getArticle = async (id) => {
   if (!id) return;
   const getArticleRef = doc(db, ARTICLE_COLLECTION, id);
   const response = await getDoc(getArticleRef);
+  if (!response.data()) return null;
   return { ...response.data(), id };
 };
 
