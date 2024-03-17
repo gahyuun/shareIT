@@ -1,6 +1,7 @@
 import Swal from 'sweetalert2';
 import { routes } from '../routes';
 import { createDom } from './Dom';
+import NotFound from '../components/NotFound';
 
 const checkAuthentication = (currentRoute) => {
   if (currentRoute.authentication && !localStorage.getItem('userInfo')) {
@@ -20,15 +21,19 @@ const pathToRegex = (path) =>
   new RegExp('^' + path.replace(/\//g, '\\/').replace(/:\w+/g, '(.+)') + '$');
 
 export function routeRender() {
-  if (!location.pathname) {
-    history.replaceState(null, '', '/');
-  }
   const root = document.querySelector('router-view');
 
   const currentRoute = routes.find((route) => {
     routePath = route.path;
     return location.pathname.match(pathToRegex(route.path));
   });
+
+  if (!currentRoute) {
+    createDom(new NotFound(root));
+    window.scrollTo(0, 0);
+    return;
+  } // 일치하는 경로가 없을 때 404 처리
+
   if (!checkAuthentication(currentRoute)) {
     redirectHome();
     return;
