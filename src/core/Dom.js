@@ -43,7 +43,6 @@ export function createDom(component) {
   if (oldComponent) {
     clearEvent(oldComponent);
   }
-  oldComponent = component;
 
   const newNode = componentRoot.cloneNode(true);
   newNode.innerHTML = component.template();
@@ -56,4 +55,5 @@ export function createDom(component) {
   }
   enrollEvent(component);
   mounted(component);
+  oldComponent = component;
 } // 렌더링

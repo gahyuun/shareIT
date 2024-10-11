@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const dotenv = require('dotenv');
 
-dotenv.config();
+dotenv.config(); //환경 변수를 process.env 객체에 추가
 module.exports = {
   mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   // 시작점
